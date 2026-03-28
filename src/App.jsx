@@ -1,8 +1,65 @@
+import { useState } from "react";
+
 function App() {
+    const [formData, setFormData] = useState({
+        name: "",
+        phone: "",
+        address: "",
+        paymentType: "",
+        last5Digits: "",
+    });
+
+    const handleChange = (e) => {
+        const { id, value } = e.target;
+        if (id === "grid-first-name") setFormData({ ...formData, name: value });
+        if (id === "grid-phone-number")
+            setFormData({ ...formData, phone: value });
+        if (id === "grid-address") setFormData({ ...formData, address: value });
+        if (id === "grid-payment")
+            setFormData({ ...formData, paymentType: value });
+        if (id === "grid-last-digit")
+            setFormData({ ...formData, last5Digits: value });
+    };
+
+    const sendOrderNotification = async (orderInfo) => {
+        const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+        const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
+
+        const message = `
+          📦 **Order အသစ်တက်လာပါပြီ!**
+          -------------------------
+        👤 အမည်: ${orderInfo.name}
+        📞 ဖုန်း: ${orderInfo.phone}
+        📍 လိပ်စာ: ${orderInfo.address}
+        💰 ငွေလွှဲ: ${orderInfo.paymentType} (${orderInfo.last5Digits})
+    `;
+
+        try {
+            const response = await fetch(
+                `https://api.telegram.org/bot${token}/sendMessage`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: "Markdown",
+                    }),
+                },
+            );
+
+            if (response.ok) {
+                console.log("Telegram notification sent!");
+            }
+        } catch (error) {
+            console.error("Telegram Error:", error);
+        }
+    };
     return (
         <div className="flex items-center justify-center min-h-screen">
             <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-lg">
                 <div className="flex flex-wrap -mx-3 mb-6">
+                    {/* Name */}
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <label
                             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -11,58 +68,68 @@ function App() {
                             Full Name
                         </label>
                         <input
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                            className="appearance-none block w-full bg-gray-200 text-gray-700 borde rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                             id="grid-first-name"
                             type="text"
                             placeholder="Jane"
+                            onChange={handleChange}
+                            value={formData.name}
                         />
-                        <p className="text-red-500 text-xs italic">
-                            Please fill out this field.
-                        </p>
                     </div>
+
+                    {/* Phone */}
                     <div className="w-full md:w-1/2 px-3">
                         <label
                             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                            htmlFor="grid-last-name"
+                            htmlFor="grid-phone-number"
                         >
                             Phone Number
                         </label>
                         <input
                             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="grid-last-name"
+                            id="grid-phone-number"
                             type="text"
                             placeholder="09 xxxxxxxxx"
+                            onChange={handleChange}
+                            value={formData.phone}
                         />
                     </div>
                 </div>
+
                 <div className="flex flex-wrap -mx-3 mb-6">
+                    {/* address */}
                     <div className="w-full px-3">
                         <label
                             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                            htmlFor="grid-password"
+                            htmlFor="grid-address"
                         >
                             Delivery Address
                         </label>
                         <textarea
                             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="grid-password"
-                            type="password"
+                            id="grid-address"
                             placeholder="Enter Your Full Address"
+                            onChange={handleChange}
+                            value={formData.address}
                         />
                     </div>
                 </div>
+
                 <div className="flex flex-wrap -mx-3 mb-2">
+                    {/* Payment */}
                     <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                         <label
                             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                            htmlFor="grid-state"
+                            htmlFor="grid-payment"
                         >
                             Payment
                         </label>
                         <div className="relative">
                             <select
                                 className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                id="grid-state"
+                                id="grid-payment"
+                                onChange={handleChange}
+                                value={formData.paymentType}
                             >
                                 <option>Kpay</option>
                                 <option>Wave</option>
@@ -88,9 +155,11 @@ function App() {
                         </label>
                         <input
                             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="grid-zip"
+                            id="grid-last-digit"
                             type="text"
                             placeholder="90210"
+                            onChange={handleChange}
+                            value={formData.last5Digits}
                         />
                     </div>
                 </div>
@@ -99,6 +168,7 @@ function App() {
                         <button
                             className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full"
                             type="button"
+                            onClick={() => sendOrderNotification(formData)}
                         >
                             Confirm Payment & Order
                         </button>
