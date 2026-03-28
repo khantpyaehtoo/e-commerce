@@ -8,6 +8,7 @@ function App() {
         paymentType: "",
         last5Digits: "",
     });
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -22,6 +23,10 @@ function App() {
     };
 
     const sendOrderNotification = async (orderInfo) => {
+        if (!orderInfo.name || !orderInfo.phone || !orderInfo.address)
+            return alert("Please fill all info");
+        setIsLoading(true);
+
         const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
         const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
 
@@ -53,8 +58,12 @@ function App() {
             }
         } catch (error) {
             console.error("Telegram Error:", error);
+            alert("ပို့လို့မရပါဘူး၊ ခဏနေမှ ပြန်စမ်းကြည့်ပါ");
+        } finally {
+            setIsLoading(false);
         }
     };
+
     return (
         <div className="flex items-center justify-center min-h-screen">
             <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-lg">
@@ -131,6 +140,7 @@ function App() {
                                 onChange={handleChange}
                                 value={formData.paymentType}
                             >
+                                <option selected>Select</option>
                                 <option>Kpay</option>
                                 <option>Wave</option>
                                 <option>AYA</option>
@@ -170,7 +180,9 @@ function App() {
                             type="button"
                             onClick={() => sendOrderNotification(formData)}
                         >
-                            Confirm Payment & Order
+                            {isLoading
+                                ? "Sending..."
+                                : "Confirm Payment & Order"}
                         </button>
                     </div>
                 </div>
