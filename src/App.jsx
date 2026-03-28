@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { supabase } from "../supabaseClient";
 
 function App() {
     const [formData, setFormData] = useState({
@@ -20,6 +21,25 @@ function App() {
             setFormData({ ...formData, paymentType: value });
         if (id === "grid-last-digit")
             setFormData({ ...formData, last5Digits: value });
+    };
+
+    const handleConfirmOrder = async (formData) => {
+        const { data, error } = await supabase.from("data").insert([
+            {
+                name: formData.name,
+                phone: formData.phone,
+                address: formData.address,
+                payment: formData.paymentType,
+                receipt_digits: formData.last5Digits,
+                product_name: "Cyber-Ronin Tee",
+            },
+        ]);
+
+        if (!error) {
+            // ၂။ Data ဝင်သွားပြီဆိုမှ Telegram ဆီ Notification ပို့မယ်
+            await sendOrderNotification(formData);
+            alert("အော်ဒါတင်ခြင်း အောင်မြင်ပါတယ်!");
+        }
     };
 
     const sendOrderNotification = async (orderInfo) => {
@@ -140,7 +160,7 @@ function App() {
                                 onChange={handleChange}
                                 value={formData.paymentType}
                             >
-                                <option selected>Select</option>
+                                <option defaultValue>Select</option>
                                 <option>Kpay</option>
                                 <option>Wave</option>
                                 <option>AYA</option>
@@ -178,7 +198,8 @@ function App() {
                         <button
                             className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full"
                             type="button"
-                            onClick={() => sendOrderNotification(formData)}
+                            disabled={isLoading}
+                            onClick={() => handleConfirmOrder(formData)}
                         >
                             {isLoading
                                 ? "Sending..."
