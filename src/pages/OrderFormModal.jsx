@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../../supabaseClient";
 
-export const Form = () => {
+export default function OrderFormModal() {
     const [formData, setFormData] = useState({
         name: "",
         phone: "",
@@ -209,4 +209,4 @@ export const Form = () => {
             </form>
         </div>
     );
-};
+}

@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
-const marketItems = [
-    { id: 1, name: "SISBURMA", price: 75000, image: "./asset/hero.png" },
-    { id: 2, name: "SISBURMA", price: 65000, image: "./asset/hero.png" },
-    { id: 3, name: "SISBURMA", price: 45000, image: "./asset/hero.png" },
-];
+import useFetch from "../hooks/useFetch";
 
 const navItems = [
     { name: "Market", href: "#market" },
@@ -14,6 +9,12 @@ const navItems = [
 
 export default function ShoppingItems() {
     const [sortBy, setSortBy] = useState("low-to-high");
+
+    let {
+        data: marketItems,
+        loading,
+        error,
+    } = useFetch(`http://localhost:3001/marketItems`);
 
     const filterAndSort = () => {
         let filtered = [...marketItems];
@@ -57,6 +58,7 @@ export default function ShoppingItems() {
                 </div>
             </nav>
             {/* mobile view */}
+            {loading && <p>loading...</p>}
             {!!marketItems && (
                 <div className="md:hidden p-10">
                     {filterAndSort().map((item, key) => (
@@ -76,7 +78,7 @@ export default function ShoppingItems() {
                                             {item.name}
                                         </h2>
                                         <p className="py-2 text-gray-200">
-                                            {item.price.toLocaleString()} mmk
+                                            {item.price} <small>mmk</small>
                                         </p>
                                     </div>
 

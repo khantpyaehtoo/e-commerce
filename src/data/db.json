@@ -1,0 +1,22 @@
+{
+    "marketItems": [
+        {
+            "id": "1",
+            "name": "SISBURMA",
+            "price": "75000",
+            "image": "./asset/hero.png"
+        },
+        {
+            "id": 2,
+            "name": "Supreme",
+            "price": "65000",
+            "image": "./asset/hero.png"
+        },
+        {
+            "id": 3,
+            "name": "NIKE",
+            "price": "45000",
+            "image": "./asset/hero.png"
+        }
+    ]
+}
