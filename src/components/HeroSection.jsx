@@ -1,3 +1,6 @@
+import { Send } from "lucide-react";
+import { Link } from "react-router-dom";
+
 export default function HeroSection() {
     return (
         <section className="relative min-h-[80%] flex flex-col items-center justify-center px-4 ">
@@ -7,12 +10,12 @@ export default function HeroSection() {
                         <p>Welcome to ONIMUSHA</p>
                     </h1>
 
-                    <a
-                        href=""
+                    <Link
+                        to={"#"}
                         className="bg-blue-400 text-white rounded-lg px-4 py-4 font-bold hover:bg-amber-300"
                     >
-                        Contact Me On Telegram
-                    </a>
+                        <span>Contact Me On Telegram</span>
+                    </Link>
                 </div>
             </div>
         </section>
