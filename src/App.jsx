@@ -1,19 +1,14 @@
-import Footer from "./components/Footer";
-import HeroSection from "./components/HeroSection";
-import NavSection from "./components/NavSection";
-import ShoppingItems from "./components/ShoppingItem";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
 
 function App() {
     return (
         <>
-            <HeroSection />
-            <NavSection />
-
-            <main>
-                <ShoppingItems />
-            </main>
-
-            <Footer />
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                </Routes>
+            </BrowserRouter>
         </>
     );
 }
