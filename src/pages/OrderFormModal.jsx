@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../../supabaseClient";
 
-export default function OrderFormModal() {
+export default function OrderFormModal({ productName, onClose }) {
     const [formData, setFormData] = useState({
         name: "",
         phone: "",
@@ -31,7 +31,7 @@ export default function OrderFormModal() {
                 address: formData.address,
                 payment: formData.paymentType,
                 receipt_digits: formData.last5Digits,
-                product_name: "Cyber-Ronin Tee",
+                product_name: productName,
             },
         ]);
 
@@ -52,6 +52,7 @@ export default function OrderFormModal() {
         const message = `
           📦 **Order အသစ်တက်လာပါပြီ!**
           -------------------------
+        📦 ပစ္စည်း: ${productName}
         👤 အမည်: ${orderInfo.name}
         📞 ဖုန်း: ${orderInfo.phone}
         📍 လိပ်စာ: ${orderInfo.address}
@@ -86,6 +87,51 @@ export default function OrderFormModal() {
     return (
         <div className="flex items-center justify-center min-h-screen">
             <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-lg">
+                <button
+                    onClick={onClose}
+                    className="absolute top-4 right-6 text-2xl font-bold text-gray-500 hover:text-gray-800"
+                >
+                    ×
+                </button>
+
+                <div className="mb-4">
+                    <h1 className="text-3xl font-black text-gray-900 uppercase">
+                        Buy Now
+                    </h1>
+                    <p className="text-gray-500 text-sm mt-1">
+                        Complete your order to join the syndicate.
+                    </p>
+                </div>
+
+                <div className="bg-gray-100 p-5 rounded-md mb-6 border-l-4 border-green-500 relative">
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                Kpay Account
+                            </span>
+                            <p className="text-xl font-bold text-gray-800 mt-1">
+                                09699xxxxxx
+                            </p>
+                        </div>
+                        <div>
+                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                Wave Money
+                            </span>
+                            <p className="text-xl font-bold text-gray-800 mt-1">
+                                09699xxxxxx
+                            </p>
+                        </div>
+                    </div>
+
+                    <a
+                        href="https://t.me/pyxis_xi"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-4 bg-sky-500 hover:bg-sky-400 text-white font-bold py-3 px-4 w-full flex items-center justify-center gap-2 rounded text-sm uppercase"
+                    >
+                        <span>➤</span> Chat on Telegram
+                    </a>
+                </div>
                 <div className="flex flex-wrap -mx-3 mb-6">
                     {/* Name */}
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">

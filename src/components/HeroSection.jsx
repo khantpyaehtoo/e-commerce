@@ -1,4 +1,3 @@
-import { Send } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function HeroSection() {
@@ -12,7 +11,7 @@ export default function HeroSection() {
 
                     <Link
                         to={"#"}
-                        className="bg-blue-400 text-white rounded-lg px-4 py-4 font-bold hover:bg-amber-300"
+                        className="bg-blue-400 text-white rounded-lg px-2 py-2 font-bold hover:bg-amber-300"
                     >
                         <span>Contact Me On Telegram</span>
                     </Link>

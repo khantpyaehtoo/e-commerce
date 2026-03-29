@@ -17,6 +17,12 @@
             "name": "NIKE",
             "price": "45000",
             "image": "./asset/hero.png"
+        },
+        {
+            "id": 4,
+            "name": "Addias",
+            "price": "90000",
+            "image": "./asset/hero.png"
         }
     ]
 }

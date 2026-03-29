@@ -59,7 +59,7 @@ export default function ShoppingItems() {
                     ))}
                 </div>
 
-                {/* Desktop View Nav (Optional: Desktop မှာပါ Sort လုပ်ချင်ရင်) */}
+                {/* Desktop View Nav */}
                 <div className="hidden md:flex justify-between items-center px-10 py-5">
                     <div className="flex gap-4">
                         {navItems.map((item, key) => (
@@ -86,16 +86,11 @@ export default function ShoppingItems() {
             {loading && <p className="text-center mt-10">loading...</p>}
             {error && <p className="text-center text-red-500 mt-10">{error}</p>}
 
-            {/* ကုန်ပစ္စည်းများ စာရင်း */}
             {!!marketItems && (
                 <div className="p-5 md:p-10">
-                    {/* Mobile မှာ တစ်ခုချင်းစီပြပြီး (grid-cols-1)၊ 
-                      Desktop (md) မှာ ၄ ခုစီ ဘေးတိုက်ပြမယ် (md:grid-cols-4)
-                    */}
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                         {filterAndSort().map((item) => (
                             <Link to={`/marketItems/${item.id}`} key={item.id}>
-                                {/* ၁။ Mobile View (မင်းရေးထားတဲ့အတိုင်း Grid row နဲ့ သွားမယ်) */}
                                 <div className="grid grid-cols-2 gap-2 bg-gray-600 p-2 rounded-lg overflow-hidden h-[220px] md:hidden">
                                     <div className="w-full h-full">
                                         <img
@@ -121,7 +116,6 @@ export default function ShoppingItems() {
                                     </div>
                                 </div>
 
-                                {/* ၂။ Desktop View (Card တွေကို အပေါ်အောက်ပုံစံ ပြောင်းလိုက်မယ်) */}
                                 <div className="hidden md:flex flex-col bg-gray-600 rounded-lg overflow-hidden h-[380px] hover:scale-105 transition-transform duration-300">
                                     <div className="w-full h-[220px]">
                                         <img
