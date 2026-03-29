@@ -1,213 +1,104 @@
-import { useState } from "react";
-import { supabase } from "../supabaseClient";
+import { ShoppingCart } from "lucide-react";
+
+const navItems = [
+    { name: "Market", href: "#market" },
+    { name: "Blogs", href: "#blogs" },
+];
+
+const marketItems = [
+    { name: "SISBURMA", price: "75,000 mmk", image: "./asset/hero.png" },
+    { name: "SISBURMA", price: "75,000 mmk", image: "./asset/hero.png" },
+    { name: "SISBURMA", price: "75,000 mmk", image: "./asset/hero.png" },
+];
 
 function App() {
-    const [formData, setFormData] = useState({
-        name: "",
-        phone: "",
-        address: "",
-        paymentType: "",
-        last5Digits: "",
-    });
-    const [isLoading, setIsLoading] = useState(false);
-
-    const handleChange = (e) => {
-        const { id, value } = e.target;
-        if (id === "grid-first-name") setFormData({ ...formData, name: value });
-        if (id === "grid-phone-number")
-            setFormData({ ...formData, phone: value });
-        if (id === "grid-address") setFormData({ ...formData, address: value });
-        if (id === "grid-payment")
-            setFormData({ ...formData, paymentType: value });
-        if (id === "grid-last-digit")
-            setFormData({ ...formData, last5Digits: value });
-    };
-
-    const handleConfirmOrder = async (formData) => {
-        const { data, error } = await supabase.from("data").insert([
-            {
-                name: formData.name,
-                phone: formData.phone,
-                address: formData.address,
-                payment: formData.paymentType,
-                receipt_digits: formData.last5Digits,
-                product_name: "Cyber-Ronin Tee",
-            },
-        ]);
-
-        if (!error) {
-            // ၂။ Data ဝင်သွားပြီဆိုမှ Telegram ဆီ Notification ပို့မယ်
-            await sendOrderNotification(formData);
-            alert("အော်ဒါတင်ခြင်း အောင်မြင်ပါတယ်!");
-        }
-    };
-
-    const sendOrderNotification = async (orderInfo) => {
-        if (!orderInfo.name || !orderInfo.phone || !orderInfo.address)
-            return alert("Please fill all info");
-        setIsLoading(true);
-
-        const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
-        const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
-
-        const message = `
-          📦 **Order အသစ်တက်လာပါပြီ!**
-          -------------------------
-        👤 အမည်: ${orderInfo.name}
-        📞 ဖုန်း: ${orderInfo.phone}
-        📍 လိပ်စာ: ${orderInfo.address}
-        💰 ငွေလွှဲ: ${orderInfo.paymentType} (${orderInfo.last5Digits})
-    `;
-
-        try {
-            const response = await fetch(
-                `https://api.telegram.org/bot${token}/sendMessage`,
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        chat_id: chatId,
-                        text: message,
-                        parse_mode: "Markdown",
-                    }),
-                },
-            );
-
-            if (response.ok) {
-                console.log("Telegram notification sent!");
-            }
-        } catch (error) {
-            console.error("Telegram Error:", error);
-            alert("ပို့လို့မရပါဘူး၊ ခဏနေမှ ပြန်စမ်းကြည့်ပါ");
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
     return (
-        <div className="flex items-center justify-center min-h-screen">
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-lg">
-                <div className="flex flex-wrap -mx-3 mb-6">
-                    {/* Name */}
-                    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label
-                            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                            htmlFor="grid-first-name"
-                        >
-                            Full Name
-                        </label>
-                        <input
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 borde rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                            id="grid-first-name"
-                            type="text"
-                            placeholder="Jane"
-                            onChange={handleChange}
-                            value={formData.name}
-                        />
-                    </div>
+        <div>
+            <section className="relative min-h-[80%] flex flex-col items-center justify-center px-4 ">
+                <div className="container max-w-4xl mx-auto text-center z-10 border-2 border-amber-500 py-8 my-10">
+                    <div className="space-y-6">
+                        <h1 className="text-4xl md:text-6xl font-bold">
+                            <p>Welcome to ONIMUSHA</p>
+                        </h1>
 
-                    {/* Phone */}
-                    <div className="w-full md:w-1/2 px-3">
-                        <label
-                            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                            htmlFor="grid-phone-number"
+                        <a
+                            href=""
+                            className="bg-blue-400 text-white rounded-lg px-4 py-4 font-bold hover:bg-amber-300"
                         >
-                            Phone Number
-                        </label>
-                        <input
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="grid-phone-number"
-                            type="text"
-                            placeholder="09 xxxxxxxxx"
-                            onChange={handleChange}
-                            value={formData.phone}
-                        />
+                            Contact Me On Telegram
+                        </a>
                     </div>
                 </div>
+            </section>
 
-                <div className="flex flex-wrap -mx-3 mb-6">
-                    {/* address */}
-                    <div className="w-full px-3">
-                        <label
-                            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                            htmlFor="grid-address"
+            <nav>
+                <div className="grid grid-cols-3 gap-2 mx-2 my-2 ">
+                    <select
+                        className="block appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                        id="grid-payment"
+                    >
+                        <option defaultValue>Select</option>
+                        <option>Low to High</option>
+                        <option>High to Low</option>
+                    </select>
+
+                    {navItems.map((item, key) => (
+                        <a
+                            href={item.href}
+                            key={key}
+                            className="py-3 px-4 bg-blue-400 text-white hover:bg-amber-300 focus:bg-white rounded-md"
                         >
-                            Delivery Address
-                        </label>
-                        <textarea
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="grid-address"
-                            placeholder="Enter Your Full Address"
-                            onChange={handleChange}
-                            value={formData.address}
-                        />
-                    </div>
+                            {item.name}
+                        </a>
+                    ))}
                 </div>
+            </nav>
 
-                <div className="flex flex-wrap -mx-3 mb-2">
-                    {/* Payment */}
-                    <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                        <label
-                            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                            htmlFor="grid-payment"
+            <main>
+                <div className="p-10">
+                    {marketItems.map((item) => (
+                        <div
+                            key={item.id}
+                            className="grid grid-cols-2 gap-2 bg-gray-600 p-2 rounded-lg overflow-hidden h-[220px] my-5"
                         >
-                            Payment
-                        </label>
-                        <div className="relative">
-                            <select
-                                className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                id="grid-payment"
-                                onChange={handleChange}
-                                value={formData.paymentType}
-                            >
-                                <option defaultValue>Select</option>
-                                <option>Kpay</option>
-                                <option>Wave</option>
-                                <option>AYA</option>
-                            </select>
-                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg
-                                    className="fill-current h-4 w-4"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                </svg>
+                            <div className="w-full h-full">
+                                <img
+                                    src={item.image}
+                                    alt={item.name}
+                                    className="w-full h-full object-cover bg-amber-200 shadow-2xl rounded-l-md"
+                                />
+                            </div>
+
+                            <div className="px-6 py-4 flex flex-col h-full">
+                                <div className="flex-grow">
+                                    <h2 className="py-1 font-bold text-2xl text-white">
+                                        {item.name}
+                                    </h2>
+                                    <p className="py-2 text-gray-200">
+                                        {item.price}
+                                    </p>
+                                </div>
+
+                                <div className="flex flex-row-reverse gap-2 justify-end items-center mb-2">
+                                    <a
+                                        href="#"
+                                        className="bg-red-600 text-white px-6 py-2 w-full text-center rounded-lg"
+                                    >
+                                        Info
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="w-full md:w-2/3 px-3 mb-6 md:mb-0">
-                        <label
-                            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                            htmlFor="grid-zip"
-                        >
-                            Last 5 Digit of Payslip Id
-                        </label>
-                        <input
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="grid-last-digit"
-                            type="text"
-                            placeholder="90210"
-                            onChange={handleChange}
-                            value={formData.last5Digits}
-                        />
-                    </div>
+                    ))}
                 </div>
-                <div className="md:flex md:items-center my-4 items-center">
-                    <div className="w-full">
-                        <button
-                            className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full"
-                            type="button"
-                            disabled={isLoading}
-                            onClick={() => handleConfirmOrder(formData)}
-                        >
-                            {isLoading
-                                ? "Sending..."
-                                : "Confirm Payment & Order"}
-                        </button>
-                    </div>
+            </main>
+
+            <footer className="w-full h-8 bg-gray-600 p-2">
+                <div className="flex justify-evenly items-center text-sm text-white">
+                    <p>Onimusha</p>
+                    <span>Copyright Term</span>
                 </div>
-            </form>
+            </footer>
         </div>
     );
 }
