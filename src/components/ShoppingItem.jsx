@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
+import { supabase } from "../../supabaseClient";
 
 const navItems = [
     { name: "Market", href: "#market" },
@@ -9,15 +10,23 @@ const navItems = [
 
 export default function ShoppingItems() {
     const [sortBy, setSortBy] = useState("low-to-high");
+    const [items, setItems] = useState([]);
 
-    let {
-        data: marketItems,
-        loading,
-        error,
-    } = useFetch(`http://localhost:3001/marketItems`);
+    useEffect(() => {
+        const fetchItemsFromSupabase = async () => {
+            const { data, error } = await supabase
+                .from("Market_Items")
+                .select("*");
+
+            if (!error && data) {
+                setItems(data);
+            }
+        };
+        fetchItemsFromSupabase();
+    }, []);
 
     const filterAndSort = () => {
-        let filtered = [...marketItems];
+        let filtered = [...items];
 
         filtered.sort((a, b) => {
             switch (sortBy) {
@@ -83,10 +92,10 @@ export default function ShoppingItems() {
                 </div>
             </nav>
 
-            {loading && <p className="text-center mt-10">loading...</p>}
-            {error && <p className="text-center text-red-500 mt-10">{error}</p>}
+            {/* {loading && <p className="text-center mt-10">loading...</p>} */}
+            {/* {error && <p className="text-center text-red-500 mt-10">{error}</p>} */}
 
-            {!!marketItems && (
+            {items.length > 0 && (
                 <div className="p-5 md:p-10">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                         {filterAndSort().map((item) => (

@@ -33,7 +33,7 @@ export default function ItemDetail() {
                             className="font-bold text-2xl"
                             onClick={() => navigate("/")}
                         >
-                            Onimusha
+                            Burmese_Python
                         </h2>
                     </div>
 

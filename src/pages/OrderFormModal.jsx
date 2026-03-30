@@ -85,8 +85,8 @@ export default function OrderFormModal({ productName, onClose }) {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen">
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-lg">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm bg-black/50">
+            <form className="bg-white shadow-2xl rounded-lg px-8 pt-6 pb-8 w-full max-w-lg relative max-h-[90vh] overflow-y-auto">
                 <button
                     onClick={onClose}
                     className="absolute top-4 right-6 text-2xl font-bold text-gray-500 hover:text-gray-800"
