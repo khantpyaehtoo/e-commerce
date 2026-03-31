@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import useFetch from "../hooks/useFetch";
-import { supabase } from "../../supabaseClient";
+
+import useSupabase from "../hooks/useSupabase";
 
 const navItems = [
     { name: "Market", href: "#market" },
@@ -10,20 +10,9 @@ const navItems = [
 
 export default function ShoppingItems() {
     const [sortBy, setSortBy] = useState("low-to-high");
-    const [items, setItems] = useState([]);
 
-    useEffect(() => {
-        const fetchItemsFromSupabase = async () => {
-            const { data, error } = await supabase
-                .from("Market_Items")
-                .select("*");
-
-            if (!error && data) {
-                setItems(data);
-            }
-        };
-        fetchItemsFromSupabase();
-    }, []);
+    const { useCollection } = useSupabase();
+    const { data: items, error, loading } = useCollection("Market_Items");
 
     const filterAndSort = () => {
         let filtered = [...items];
@@ -92,8 +81,8 @@ export default function ShoppingItems() {
                 </div>
             </nav>
 
-            {/* {loading && <p className="text-center mt-10">loading...</p>} */}
-            {/* {error && <p className="text-center text-red-500 mt-10">{error}</p>} */}
+            {loading && <p className="text-center mt-10">loading...</p>}
+            {error && <p className="text-center text-red-500 mt-10">{error}</p>}
 
             {items.length > 0 && (
                 <div className="p-5 md:p-10">
