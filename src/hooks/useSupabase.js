@@ -64,5 +64,69 @@ export default function useSupabase() {
         return { data, error, loading };
     };
 
-    return { useCollection };
+    let getDocument = (tableName, id) => {
+        const [data, setData] = useState(null);
+        const [error, setError] = useState("");
+        const [loading, setLoading] = useState(false);
+
+        useEffect(() => {
+            // id မပါလာရင် ဘာမှလုပ်စရာမလိုလို့ ခဏရပ်မယ်
+            if (!id) return;
+
+            setLoading(true);
+
+            // (Initial Fetch)
+            const fetchDocument = async () => {
+                const { data: docData, error: fetchError } = await supabase
+                    .from(tableName)
+                    .select("*")
+                    .eq("id", id) // id ကွက်တိတူတာကို ရှာတာ
+                    .single(); // array မဟုတ်ဘဲ object တစ်ခုတည်းပဲ လိုချင်လို့
+
+                if (fetchError) {
+                    setError("No document found");
+                    setData(null);
+                    setLoading(false);
+                } else {
+                    setData(docData);
+                    setError("");
+                    setLoading(false);
+                }
+            };
+
+            fetchDocument();
+
+            // RealTime Event Listener
+            const channel = supabase
+                .channel(`realtime-${tableName}-${id}`)
+                .on(
+                    "postgres_changes",
+                    {
+                        event: "*",
+                        schema: "public",
+                        table: tableName,
+                        filter: `id=eq.${id}`, // ဒီ id တစ်ခုတည်း ပြောင်းလဲမှုကိုပဲ နားထောင်မယ်
+                    },
+                    (payload) => {
+                        // ဒေတာအသစ် ပြောင်းလဲသွားရင် state ကို update လုပ်မယ်
+                        if (payload.eventType === "DELETE") {
+                            setData(null);
+                            setError("This document was deleted");
+                        } else {
+                            setData(payload.new);
+                        }
+                    },
+                )
+                .subscribe();
+
+            // 3. cleanup function
+            return () => {
+                supabase.removeChannel(channel);
+            };
+        }, [tableName, id]);
+
+        return { data, error, loading };
+    };
+
+    return { useCollection, getDocument };
 }
