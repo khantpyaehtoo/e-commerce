@@ -3,17 +3,16 @@ import useFetch from "../hooks/useFetch";
 import { useState } from "react";
 import OrderFormModal from "./OrderFormModal";
 import { Undo2 } from "lucide-react";
+import useSupabase from "../hooks/useSupabase";
 
 export default function ItemDetail() {
     let { id } = useParams();
     let navigate = useNavigate();
     const [isFormOpen, setIsFormOpen] = useState(false);
 
-    let {
-        data: item,
-        loading,
-        error,
-    } = useFetch(`http://localhost:3001/marketItems/${id}`);
+    let { getDocument } = useSupabase();
+
+    let { data: item, loading, error } = getDocument("Market_Items", id);
 
     return (
         <div className="h-screen relative">
