@@ -11,6 +11,13 @@ export default function OrderFormModal({ productName, onClose }) {
     });
     const [isLoading, setIsLoading] = useState(false);
 
+    const isFormInvalid =
+        !formData.name.trim() ||
+        !formData.phone.trim() ||
+        !formData.address.trim() ||
+        formData.paymentType === "" ||
+        !formData.last5Digits.trim();
+
     const handleChange = (e) => {
         const { id, value } = e.target;
         if (id === "grid-first-name") setFormData({ ...formData, name: value });
@@ -23,7 +30,13 @@ export default function OrderFormModal({ productName, onClose }) {
             setFormData({ ...formData, last5Digits: value });
     };
 
-    const handleConfirmOrder = async (formData) => {
+    const handleConfirmOrder = async (e) => {
+        e.preventDefault();
+
+        if (isFormInvalid) return;
+
+        setIsLoading(true);
+
         const { data, error } = await supabase.from("data").insert([
             {
                 name: formData.name,
@@ -38,7 +51,11 @@ export default function OrderFormModal({ productName, onClose }) {
         if (!error) {
             await sendOrderNotification(formData);
             alert("အော်ဒါတင်ခြင်း အောင်မြင်ပါတယ်!");
+            onClose();
+        } else {
+            alert("Database သိမ်းရာမှာ အမှားအယွင်းရှိပါတယ်");
         }
+        setIsLoading(false);
     };
 
     const sendOrderNotification = async (orderInfo) => {
@@ -86,10 +103,13 @@ export default function OrderFormModal({ productName, onClose }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm bg-black/50">
-            <form className="bg-white shadow-2xl rounded-lg px-8 pt-6 pb-8 w-full max-w-lg relative max-h-[90vh] overflow-y-auto">
+            <form
+                className="bg-white shadow-2xl rounded-lg px-8 pt-6 pb-8 w-full max-w-lg relative max-h-[90vh] overflow-y-auto no-scrollbar"
+                onSubmit={handleConfirmOrder}
+            >
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-6 text-2xl font-bold text-gray-500 hover:text-gray-800"
+                    className="absolute top-4 right-6 text-2xl font-bold text-gray-500 cursor-pointer hover:text-gray-800"
                 >
                     ×
                 </button>
@@ -139,7 +159,7 @@ export default function OrderFormModal({ productName, onClose }) {
                             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                             htmlFor="grid-first-name"
                         >
-                            Full Name
+                            Full Name <span className="text-red-500">*</span>
                         </label>
                         <input
                             className="appearance-none block w-full bg-gray-200 text-gray-700 borde rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
@@ -157,7 +177,7 @@ export default function OrderFormModal({ productName, onClose }) {
                             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                             htmlFor="grid-phone-number"
                         >
-                            Phone Number
+                            Phone Number <span className="text-red-500">*</span>
                         </label>
                         <input
                             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -177,7 +197,8 @@ export default function OrderFormModal({ productName, onClose }) {
                             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                             htmlFor="grid-address"
                         >
-                            Delivery Address
+                            Delivery Address{" "}
+                            <span className="text-red-500">*</span>
                         </label>
                         <textarea
                             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -196,7 +217,7 @@ export default function OrderFormModal({ productName, onClose }) {
                             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                             htmlFor="grid-payment"
                         >
-                            Payment
+                            Payment <span className="text-red-500">*</span>
                         </label>
                         <div className="relative">
                             <select
@@ -205,7 +226,7 @@ export default function OrderFormModal({ productName, onClose }) {
                                 onChange={handleChange}
                                 value={formData.paymentType}
                             >
-                                <option defaultValue>Select</option>
+                                <option value="">Select</option>
                                 <option>Kpay</option>
                                 <option>Wave</option>
                                 <option>AYA</option>
@@ -221,30 +242,37 @@ export default function OrderFormModal({ productName, onClose }) {
                             </div>
                         </div>
                     </div>
+
                     <div className="w-full md:w-2/3 px-3 mb-6 md:mb-0">
                         <label
                             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                             htmlFor="grid-zip"
                         >
-                            Last 5 Digit of Payslip Id
+                            Last 5 Digit of Payslip Id{" "}
+                            <span className="text-red-500">*</span>
                         </label>
                         <input
                             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                             id="grid-last-digit"
                             type="text"
-                            placeholder="90210"
+                            placeholder="xxxxx"
                             onChange={handleChange}
                             value={formData.last5Digits}
+                            required
                         />
                     </div>
                 </div>
+
                 <div className="md:flex md:items-center my-4 items-center">
                     <div className="w-full">
                         <button
-                            className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full"
-                            type="button"
-                            disabled={isLoading}
-                            onClick={() => handleConfirmOrder(formData)}
+                            type="submit"
+                            className={`shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full transition-colors cursor-pointer ${
+                                isFormInvalid || isLoading
+                                    ? "bg-gray-400 cursor-not-allowed"
+                                    : "bg-purple-500 hover:bg-purple-400"
+                            }`}
+                            disabled={isFormInvalid || isLoading}
                         >
                             {isLoading
                                 ? "Sending..."

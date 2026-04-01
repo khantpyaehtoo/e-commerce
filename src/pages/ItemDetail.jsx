@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import useFetch from "../hooks/useFetch";
 import { useState } from "react";
 import OrderFormModal from "./OrderFormModal";
 import { Undo2 } from "lucide-react";
@@ -24,7 +23,7 @@ export default function ItemDetail() {
                     <div className="flex flex-row justify-between items-center bg-gray-200 p-3 shadow-sm shadow-gray-500 ">
                         <button
                             onClick={() => navigate("/")}
-                            className="text-gray-600 "
+                            className="text-gray-600 cursor-pointer"
                         >
                             <Undo2 />
                         </button>
@@ -37,13 +36,13 @@ export default function ItemDetail() {
                     </div>
 
                     <div
-                        className={`${isFormOpen ? "hidden md:grid" : "grid"} grid-cols-1 md:grid-cols-2 gap-2 my-10`}
+                        className={`${isFormOpen ? "hidden md:grid" : "grid"} grid-cols-1 md:grid-cols-2 gap-2 my-10 py-10`}
                     >
-                        <div>
+                        <div className="border-amber-200 border border-2 rounded-md">
                             <img
                                 src={item.image}
                                 alt={item.name}
-                                className="w-[95%] h-[250px] bg-amber-400  px-5 mx-auto object-cover"
+                                className="w-[95%] h-[250px] mx-auto object-cover"
                             />
                         </div>
                         <div className="space-y-4 px-5 md:px-0">
@@ -52,7 +51,7 @@ export default function ItemDetail() {
                                 {item.price} <small>mmk</small>
                             </p>
                             <button
-                                className="p-3 bg-amber-950 text-white rounded-full"
+                                className="p-3 text-white rounded-full bg-purple-500 hover:bg-purple-400"
                                 onClick={() => setIsFormOpen(true)}
                             >
                                 Order Now
@@ -63,7 +62,7 @@ export default function ItemDetail() {
                         <div className="fixed inset-0 bg-white z-50 md:relative md:bg-transparent md:z-0 md:mt-10 ">
                             <button
                                 onClick={() => setIsFormOpen(false)}
-                                className="absolute top-4 right-6 text-3xl font-bold text-gray-600 md:hidden"
+                                className="absolute top-4 right-6 text-3xl font-bold cursor-pointer text-gray-600 md:hidden"
                             >
                                 ×
                             </button>

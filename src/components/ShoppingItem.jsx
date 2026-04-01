@@ -89,7 +89,7 @@ export default function ShoppingItems() {
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                         {filterAndSort().map((item) => (
                             <Link to={`/marketItems/${item.id}`} key={item.id}>
-                                <div className="grid grid-cols-2 gap-2 bg-gray-600 p-2 rounded-lg overflow-hidden h-[220px] md:hidden">
+                                <div className="grid grid-cols-2 gap-2 bg-gray-600 border-1 rounded-lg overflow-hidden h-[220px] md:hidden">
                                     <div className="w-full h-full">
                                         <img
                                             src={item.image}
