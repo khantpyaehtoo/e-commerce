@@ -11,7 +11,7 @@ export default function HeroSection() {
 
                     <Link
                         to={"#"}
-                        className="bg-blue-400 text-white rounded-lg px-2 py-2 font-bold hover:bg-amber-300"
+                        className="rounded-lg px-2 py-2 font-bold bg-sky-500 hover:bg-sky-400 text-white"
                     >
                         <span>Contact Me On Telegram</span>
                     </Link>
