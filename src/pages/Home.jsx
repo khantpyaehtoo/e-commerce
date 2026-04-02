@@ -1,5 +1,3 @@
-import React from "react";
-import Footer from "../components/Footer";
 import HeroSection from "../components/HeroSection";
 import ShoppingItems from "../components/ShoppingItem";
 
@@ -10,8 +8,6 @@ export default function Home() {
             <main className="flex-grow">
                 <ShoppingItems />
             </main>
-
-            <Footer />
         </div>
     );
 }

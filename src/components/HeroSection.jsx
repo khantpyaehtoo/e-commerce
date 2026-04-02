@@ -4,7 +4,7 @@ import backgroundImageURL from "../assets/backgroundPNG.jpg";
 export default function HeroSection() {
     return (
         <section
-            className="relative min-h-[60vh] flex flex-col items-center justify-center px-6 bg-cover bg-center bg-no-repeat"
+            className="sticky top-0 -z-10 min-h-[60vh] md:min-h-[70vh] flex flex-col items-center justify-center px-4 bg-cover bg-center bg-no-repeat"
             style={{
                 backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url(${backgroundImageURL})`,
             }}

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import useSupabase from "../hooks/useSupabase";
 import MenuSection from "./MenuSection";
+import Footer from "./Footer";
 
 export default function ShoppingItems() {
     const [sortBy, setSortBy] = useState("low-to-high");
@@ -28,7 +29,7 @@ export default function ShoppingItems() {
     };
 
     return (
-        <div className="bg-gray-700">
+        <div className="bg-gray-700 relative min-h-screen w-full rounded-t-3xl shadow-2xl md:top-5">
             <MenuSection setSortBy={setSortBy} sortBy={sortBy} />
 
             {loading && <p className="text-center mt-10">loading...</p>}
@@ -91,6 +92,7 @@ export default function ShoppingItems() {
                     </div>
                 </div>
             )}
+            <Footer />
         </div>
     );
 }
