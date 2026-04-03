@@ -170,7 +170,10 @@ export default function OrderFormModal({ productName, onClose }) {
                             Full Name <span className="text-red-500">*</span>
                         </label>
                         <input
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 borde rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                            className={cn(
+                                "appearance-none block w-full bg-gray-200 border border-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight",
+                                "focus:outline-none focus:bg-white focus:border-gray-500",
+                            )}
                             id="grid-first-name"
                             type="text"
                             placeholder="Jane"
