@@ -9,7 +9,7 @@ export default function HeroSection() {
                 backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url(${backgroundImageURL})`,
             }}
         >
-            <div className="container max-w-4xl mx-auto text-center border-1 border-white py-6 rounded-lg backdrop-blur-sm">
+            <div className="container max-w-4xl mx-auto text-center py-6 rounded-lg backdrop-blur-sm">
                 <div className="space-y-4">
                     <h1 className="text-3xl md:text-6xl font-bold text-white leading-tight">
                         Don't <span className="text-blue-500">OVERWATER</span>{" "}

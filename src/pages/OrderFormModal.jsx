@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../../supabaseClient";
+import { cn } from "../lib/utils";
 
 export default function OrderFormModal({ productName, onClose }) {
     const [formData, setFormData] = useState({
@@ -109,7 +110,10 @@ export default function OrderFormModal({ productName, onClose }) {
             >
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-6 text-2xl font-bold text-gray-500 cursor-pointer hover:text-gray-800"
+                    className={cn(
+                        "absolute top-4 right-6 text-2xl font-bold text-gray-500 cursor-pointer",
+                        "hover:text-gray-800",
+                    )}
                 >
                     ×
                 </button>
@@ -147,7 +151,10 @@ export default function OrderFormModal({ productName, onClose }) {
                         href="https://t.me/pyxis_xi"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-4 bg-sky-500 hover:bg-sky-400 text-white font-bold py-3 px-4 w-full flex items-center justify-center gap-2 rounded text-sm uppercase"
+                        className={cn(
+                            "mt-4 bg-sky-500 text-white font-bold py-3 px-4 w-full flex items-center justify-center gap-2 rounded text-sm uppercase",
+                            "hover:bg-sky-400",
+                        )}
                     >
                         <span>➤</span> Chat on Telegram
                     </a>
