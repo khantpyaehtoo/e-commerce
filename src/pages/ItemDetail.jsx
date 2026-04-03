@@ -4,6 +4,7 @@ import OrderFormModal from "./OrderFormModal";
 
 import useSupabase from "../hooks/useSupabase";
 import DetailNavSection from "../components/DetailNavSection";
+import { cn } from "../lib/utils";
 
 export default function ItemDetail() {
     let { id } = useParams();
@@ -23,7 +24,10 @@ export default function ItemDetail() {
             {item && (
                 <>
                     <div
-                        className={`${isFormOpen ? "hidden md:grid" : "grid"} grid-cols-1 md:grid-cols-2 gap-4 my-10 h-[400px] px-10`}
+                        className={cn(
+                            "grid-cols-1 md:grid-cols-2 gap-4 my-10 h-[400px] px-10",
+                            isFormOpen ? "hidden md:grid" : "grid",
+                        )}
                     >
                         <div className="border-amber-200 border border-2 rounded-md">
                             <img
