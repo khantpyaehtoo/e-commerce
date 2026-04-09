@@ -4,7 +4,7 @@ import { Undo2 } from "lucide-react";
 export default function DetailNavSection() {
     const navigate = useNavigate();
     return (
-        <div className="flex flex-row justify-between items-center bg-gray-200 p-3 shadow-sm shadow-gray-500 ">
+        <div className="flex flex-row justify-between items-center p-3">
             <button
                 onClick={() => navigate("/")}
                 className="text-gray-600 cursor-pointer"
@@ -12,7 +12,7 @@ export default function DetailNavSection() {
                 <Undo2 />
             </button>
             <h4
-                className="font-bold text-2xl cursor-pointer"
+                className="font-bold text-md cursor-pointer md:text-xl"
                 onClick={() => navigate("/")}
             >
                 Burmese_Python
