@@ -9,6 +9,7 @@ import LoginForm from "./pages/LoginForm";
 
 function App() {
     const { user, authReady } = useContext(AuthContext);
+    const isAuthenticated = !!user;
 
     if (!authReady) {
         return <div>Loading...</div>;
@@ -23,7 +24,7 @@ function App() {
 
                 <Route
                     path={import.meta.env.VITE_ADMIN_PATH}
-                    element={user ? <AdminPanel /> : <LoginForm />}
+                    element={isAuthenticated ? <AdminPanel /> : <LoginForm />}
                 />
             </Routes>
         </BrowserRouter>
