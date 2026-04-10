@@ -24,9 +24,11 @@ export default function HeroSection() {
 
                     <Link
                         to={"#"}
-                        className="inline-block rounded-lg px-4 py-2.5 text-sm font-bold bg-sky-500 hover:bg-sky-400 text-white transition-colors"
+                        className="inline-block  rounded-lg px-4 py-2.5 text-sm font-bold bg-sky-500 hover:bg-sky-400 text-white transition-colors "
                     >
-                        <span>Contact Me On Telegram</span>
+                        <span className="cursor-pointer">
+                            Contact Me On Telegram
+                        </span>
                     </Link>
                 </div>
             </motion.div>
