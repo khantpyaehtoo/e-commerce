@@ -16,7 +16,14 @@ function App() {
     const isAuthenticated = !!user;
 
     if (!authReady) {
-        return <div>Loading...</div>;
+        return (
+            <div className="dots-container">
+                <p className="text-center mt-10 dot"></p>
+                <p className="text-center mt-10 dot"></p>
+                <p className="text-center mt-10 dot"></p>
+                <p className="text-center mt-10 dot"></p>
+            </div>
+        );
     }
 
     return (
