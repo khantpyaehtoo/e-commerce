@@ -4,7 +4,7 @@ import { cn } from "../lib/utils";
 
 const adminPath = `/${import.meta.env.VITE_ADMIN_PATH}`;
 const sideItem = [
-    { name: "Dashboard", dir: `${adminPath}/dashboard` },
+    { name: "Dashboard", dir: adminPath },
     { name: "Order", dir: `${adminPath}/order` },
     { name: "Product", dir: `${adminPath}/product` },
 ];
@@ -30,6 +30,7 @@ export default function SideBar() {
                         <NavLink
                             to={item.dir}
                             key={key}
+                            end={item.dir === adminPath}
                             className={({ isActive }) =>
                                 cn(
                                     "block py-3 px-4 rounded-lg transition-all duration-200 font-bold border border-transparent",

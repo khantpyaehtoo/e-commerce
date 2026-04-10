@@ -6,9 +6,10 @@ import Home from "./pages/Home";
 import ItemDetail from "./pages/ItemDetail";
 import AdminPanel from "./pages/AdminPanel";
 import LoginForm from "./pages/LoginForm";
-import DashboardHome from "./pages/DashboardHome";
-import OrdersPage from "./pages/OrdersPage";
-import ProductsPage from "./pages/ProductsPage";
+import DashboardHome from "./pages/dashboard/DashboardHome";
+import OrdersPage from "./pages/dashboard/OrdersPage";
+import ProductsPage from "./pages/dashboard/ProductsPage";
+import NotFound from "./pages/NotFound";
 
 function App() {
     const { user, authReady } = useContext(AuthContext);
@@ -34,6 +35,7 @@ function App() {
                     <Route path="order" element={<OrdersPage />} />
                     <Route path="product" element={<ProductsPage />} />
                 </Route>
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>
     );
