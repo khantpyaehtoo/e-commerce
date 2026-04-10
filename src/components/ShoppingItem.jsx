@@ -29,7 +29,7 @@ export default function ShoppingItems() {
     };
 
     return (
-        <div className="bg-gray-700 relative min-h-screen w-full rounded-t-3xl shadow-2xl md:top-5">
+        <div className="bg-gray-700 relative min-h-screen w-full shadow-2xl ">
             <MenuSection setSortBy={setSortBy} sortBy={sortBy} />
 
             {loading && <p className="text-center mt-10">loading...</p>}
