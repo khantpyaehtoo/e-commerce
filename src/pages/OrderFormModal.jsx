@@ -103,195 +103,186 @@ export default function OrderFormModal({ productName, onClose }) {
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm bg-black/50">
-            <form
-                className="bg-white shadow-2xl rounded-lg px-8 pt-6 pb-8 w-full max-w-lg relative max-h-[90vh] overflow-y-auto no-scrollbar"
-                onSubmit={handleConfirmOrder}
+        <form
+            className="bg-white shadow-2xl rounded-2xl px-6 py-6 w-full max-w-lg relative max-h-[95vh] overflow-y-auto no-scrollbar"
+            onSubmit={handleConfirmOrder}
+        >
+            <button
+                onClick={onClose}
+                type="button"
+                className="absolute top-3 right-5 text-2xl font-bold text-gray-400 cursor-pointer hover:text-gray-600 transition-colors"
+                aria-label="Close"
             >
-                <button
-                    onClick={onClose}
+                ×
+            </button>
+
+            <div className="mb-4">
+                <h1 className="text-2xl font-black text-gray-900 uppercase">
+                    Buy Now
+                </h1>
+                <p className="text-gray-500 text-xs mt-0.5">
+                    Complete your order to join the syndicate.
+                </p>
+            </div>
+
+            <div className="bg-gray-50 p-4 rounded-xl mb-5 border-l-4 border-purple-500 relative">
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                            Kpay Account
+                        </span>
+                        <p className="text-lg font-bold text-gray-800">
+                            09699xxxxxx
+                        </p>
+                    </div>
+                    <div>
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                            Wave Money
+                        </span>
+                        <p className="text-lg font-bold text-gray-800">
+                            09699xxxxxx
+                        </p>
+                    </div>
+                </div>
+
+                <a
+                    href="https://t.me/pyxis_xi"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={cn(
-                        "absolute top-4 right-6 text-2xl font-bold text-gray-500 cursor-pointer",
-                        "hover:text-gray-800",
+                        "mt-3 bg-sky-500 text-white font-bold py-2 px-4 w-full flex items-center justify-center gap-2 rounded-lg text-xs uppercase",
+                        "hover:bg-sky-400 transition-colors",
                     )}
                 >
-                    ×
-                </button>
+                    <span>➤</span> Chat on Telegram
+                </a>
+            </div>
 
-                <div className="mb-4">
-                    <h1 className="text-3xl font-black text-gray-900 uppercase">
-                        Buy Now
-                    </h1>
-                    <p className="text-gray-500 text-sm mt-1">
-                        Complete your order to join the syndicate.
-                    </p>
-                </div>
-
-                <div className="bg-gray-100 p-5 rounded-md mb-6 border-l-4 border-green-500 relative">
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                Kpay Account
-                            </span>
-                            <p className="text-xl font-bold text-gray-800 mt-1">
-                                09699xxxxxx
-                            </p>
-                        </div>
-                        <div>
-                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                Wave Money
-                            </span>
-                            <p className="text-xl font-bold text-gray-800 mt-1">
-                                09699xxxxxx
-                            </p>
-                        </div>
-                    </div>
-
-                    <a
-                        href="https://t.me/pyxis_xi"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={cn(
-                            "mt-4 bg-sky-500 text-white font-bold py-3 px-4 w-full flex items-center justify-center gap-2 rounded text-sm uppercase",
-                            "hover:bg-sky-400",
-                        )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                {/* Name */}
+                <div>
+                    <label
+                        className="block uppercase tracking-wide text-gray-700 text-[10px] font-bold mb-1.5"
+                        htmlFor="grid-first-name"
                     >
-                        <span>➤</span> Chat on Telegram
-                    </a>
+                        Full Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                        className={cn(
+                            "appearance-none block w-full bg-gray-50 border border-gray-100 text-gray-700 rounded-lg py-2.5 px-4 leading-tight",
+                            "focus:outline-none focus:bg-white focus:border-purple-500 transition-all",
+                        )}
+                        id="grid-first-name"
+                        type="text"
+                        placeholder="Jane"
+                        onChange={handleChange}
+                        value={formData.name}
+                    />
                 </div>
 
-                <div className="flex flex-wrap -mx-3 mb-6">
-                    {/* Name */}
-                    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label
-                            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                            htmlFor="grid-first-name"
-                        >
-                            Full Name <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            className={cn(
-                                "appearance-none block w-full bg-gray-200 border border-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight",
-                                "focus:outline-none focus:bg-white focus:border-gray-500",
-                            )}
-                            id="grid-first-name"
-                            type="text"
-                            placeholder="Jane"
-                            onChange={handleChange}
-                            value={formData.name}
-                        />
-                    </div>
-
-                    {/* Phone */}
-                    <div className="w-full md:w-1/2 px-3">
-                        <label
-                            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                            htmlFor="grid-phone-number"
-                        >
-                            Phone Number <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="grid-phone-number"
-                            type="text"
-                            placeholder="09 xxxxxxxxx"
-                            onChange={handleChange}
-                            value={formData.phone}
-                        />
-                    </div>
+                {/* Phone */}
+                <div>
+                    <label
+                        className="block uppercase tracking-wide text-gray-700 text-[10px] font-bold mb-1.5"
+                        htmlFor="grid-phone-number"
+                    >
+                        Phone Number <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                        className="appearance-none block w-full bg-gray-50 text-gray-700 border border-gray-100 rounded-lg py-2.5 px-4 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 transition-all"
+                        id="grid-phone-number"
+                        type="text"
+                        placeholder="09 xxxxxxxxx"
+                        onChange={handleChange}
+                        value={formData.phone}
+                    />
                 </div>
+            </div>
 
-                <div className="flex flex-wrap -mx-3 mb-6">
-                    {/* address */}
-                    <div className="w-full px-3">
-                        <label
-                            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                            htmlFor="grid-address"
-                        >
-                            Delivery Address{" "}
-                            <span className="text-red-500">*</span>
-                        </label>
-                        <textarea
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="grid-address"
-                            placeholder="Enter Your Full Address"
+            <div className="mb-4">
+                {/* address */}
+                <label
+                    className="block uppercase tracking-wide text-gray-700 text-[10px] font-bold mb-1.5"
+                    htmlFor="grid-address"
+                >
+                    Delivery Address <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                    className="appearance-none block w-full bg-gray-50 text-gray-700 border border-gray-100 rounded-lg py-2.5 px-4 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 transition-all"
+                    id="grid-address"
+                    rows="2"
+                    placeholder="Enter Your Full Address"
+                    onChange={handleChange}
+                    value={formData.address}
+                />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                {/* Payment */}
+                <div>
+                    <label
+                        className="block uppercase tracking-wide text-gray-700 text-[10px] font-bold mb-1.5"
+                        htmlFor="grid-payment"
+                    >
+                        Payment <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                        <select
+                            className="block appearance-none w-full bg-gray-50 border border-gray-100 text-gray-700 py-2.5 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-purple-500 transition-all"
+                            id="grid-payment"
                             onChange={handleChange}
-                            value={formData.address}
-                        />
-                    </div>
-                </div>
-
-                <div className="flex flex-wrap -mx-3 mb-2">
-                    {/* Payment */}
-                    <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                        <label
-                            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                            htmlFor="grid-payment"
+                            value={formData.paymentType}
                         >
-                            Payment <span className="text-red-500">*</span>
-                        </label>
-                        <div className="relative">
-                            <select
-                                className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                id="grid-payment"
-                                onChange={handleChange}
-                                value={formData.paymentType}
+                            <option value="">Select</option>
+                            <option>Kpay</option>
+                            <option>Wave</option>
+                            <option>AYA</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg
+                                className="fill-current h-4 w-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
                             >
-                                <option value="">Select</option>
-                                <option>Kpay</option>
-                                <option>Wave</option>
-                                <option>AYA</option>
-                            </select>
-                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg
-                                    className="fill-current h-4 w-4"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                </svg>
-                            </div>
+                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                            </svg>
                         </div>
                     </div>
-
-                    <div className="w-full md:w-2/3 px-3 mb-6 md:mb-0">
-                        <label
-                            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                            htmlFor="grid-zip"
-                        >
-                            Last 5 Digit of Payslip Id{" "}
-                            <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="grid-last-digit"
-                            type="text"
-                            placeholder="xxxxx"
-                            onChange={handleChange}
-                            value={formData.last5Digits}
-                            required
-                        />
-                    </div>
                 </div>
 
-                <div className="md:flex md:items-center my-4 items-center">
-                    <div className="w-full">
-                        <button
-                            type="submit"
-                            className={`shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full transition-colors cursor-pointer ${
-                                isFormInvalid || isLoading
-                                    ? "bg-gray-400 cursor-not-allowed"
-                                    : "bg-purple-500 hover:bg-purple-400"
-                            }`}
-                            disabled={isFormInvalid || isLoading}
-                        >
-                            {isLoading
-                                ? "Sending..."
-                                : "Confirm Payment & Order"}
-                        </button>
-                    </div>
+                <div className="md:col-span-2">
+                    <label
+                        className="block uppercase tracking-wide text-gray-700 text-[10px] font-bold mb-1.5"
+                        htmlFor="grid-zip"
+                    >
+                        Last 5 Digit of Payslip Id{" "}
+                        <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                        className="appearance-none block w-full bg-gray-50 text-gray-700 border border-gray-100 rounded-lg py-2.5 px-4 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 transition-all"
+                        id="grid-last-digit"
+                        type="text"
+                        placeholder="xxxxx"
+                        onChange={handleChange}
+                        value={formData.last5Digits}
+                        required
+                    />
                 </div>
-            </form>
-        </div>
+            </div>
+
+            <div className="w-full">
+                <button
+                    type="submit"
+                    className={`shadow focus:shadow-outline focus:outline-none text-white font-bold py-3 px-4 rounded-xl w-full transition-all cursor-pointer active:scale-[0.98] ${
+                        isFormInvalid || isLoading
+                            ? "bg-gray-300 cursor-not-allowed"
+                            : "bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-200"
+                    }`}
+                    disabled={isFormInvalid || isLoading}
+                >
+                    {isLoading ? "Sending..." : "Confirm Payment & Order"}
+                </button>
+            </div>
+        </form>
     );
 }
