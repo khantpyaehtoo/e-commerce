@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 function App() {
     const { user, authReady } = useContext(AuthContext);
     const isAuthenticated = !!user;
+    const adminPath = import.meta.env.VITE_ADMIN_PATH;
 
     if (!authReady) {
         return (
@@ -34,7 +35,7 @@ function App() {
                 <Route path="marketItems/:id" element={<ItemDetail />} />
 
                 <Route
-                    path={`/${import.meta.env.VITE_ADMIN_PATH}`}
+                    path={`/${adminPath}`}
                     element={isAuthenticated ? <AdminPanel /> : <LoginForm />}
                 >
                     <Route index element={<DashboardHome />} />
