@@ -10,7 +10,9 @@ export default function ProductFormModal({ isOpen, onClose, product = null }) {
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const { upsertItem } = useSupabase();
+    const [imageFile, setImageFile] = useState(null);
+
+    const { upsertItem, uploadImage } = useSupabase();
 
     useEffect(() => {
         if (product) {
@@ -26,20 +28,39 @@ export default function ProductFormModal({ isOpen, onClose, product = null }) {
 
     if (!isOpen) return null;
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImageFile(file);
+            setFormData({ ...formData, image: URL.createObjectURL(file) });
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
 
-        const productData = {
-            name: formData.name,
-            price: Number(formData.price),
-            image: formData.image,
-        };
-
-        if (product?.id) productData.id = product.id;
-
         try {
+            let finalImageUrl = formData.image;
+
+            if (imageFile) {
+                finalImageUrl = await uploadImage(imageFile);
+            } else if (!finalImageUrl) {
+                finalImageUrl =
+                    "https://zklirmjrbqmgrixzmviv.supabase.co/storage/v1/object/public/Products/photo_2026-03-26_21-56-19.jpg";
+            }
+
+            const productData = {
+                name: formData.name,
+                price: Number(formData.price),
+                image: finalImageUrl,
+            };
+
+            if (product?.id) {
+                productData.id = product.id;
+            }
+
             await upsertItem("Market_Items", productData);
 
             onClose();
@@ -115,6 +136,15 @@ export default function ProductFormModal({ isOpen, onClose, product = null }) {
                             Image URL
                         </label>
                         <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                            className="w-full px-4 py-3 bg-gray-100 border-transparent focus:bg-white focus:border-black border-2 rounded-xl transition-all outline-none font-bold text-gray-700"
+                        />
+                        <p className="text-[10px] text-gray-400">
+                            Or Paste an Image URL below
+                        </p>
+                        <input
                             required
                             type="url"
                             value={formData.image}
@@ -124,7 +154,7 @@ export default function ProductFormModal({ isOpen, onClose, product = null }) {
                                     image: e.target.value,
                                 })
                             }
-                            placeholder="https://images.unsplash.com/..."
+                            placeholder="https://..."
                             className="w-full px-4 py-3 bg-gray-100 border-transparent focus:bg-white focus:border-black border-2 rounded-xl transition-all outline-none font-bold text-gray-700"
                         />
                     </div>

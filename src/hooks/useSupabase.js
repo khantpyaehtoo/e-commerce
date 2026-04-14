@@ -138,5 +138,23 @@ export default function useSupabase() {
         return result;
     };
 
-    return { useCollection, getDocument, upsertItem };
+    let uploadImage = async (file) => {
+        const fileExt = file.name.split(".").pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        const { error: uploadError, data } = await supabase.storage
+            .from("Products")
+            .upload(filePath, file);
+
+        if (uploadError) throw uploadError;
+
+        const {
+            data: { publicUrl },
+        } = supabase.storage.from("Products").getPublicUrl(filePath);
+
+        return publicUrl;
+    };
+
+    return { useCollection, getDocument, upsertItem, uploadImage };
 }
