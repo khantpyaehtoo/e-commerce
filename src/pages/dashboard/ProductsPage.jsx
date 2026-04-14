@@ -39,14 +39,15 @@ export default function ProductsPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-gray-800">Products</h2>
+            <div className="flex justify-between items-center gap-4">
+                <h2 className="text-xl lg:text-2xl font-bold text-gray-800">Products</h2>
                 <button
                     onClick={handleAddClick}
-                    className="bg-black text-white px-6 py-3 rounded-xl flex items-center gap-2 hover:bg-gray-800 transition-all font-black uppercase tracking-widest text-sm shadow-lg active:scale-95"
+                    className="bg-black text-white px-4 lg:px-6 py-2.5 lg:py-3 rounded-xl flex items-center gap-2 hover:bg-gray-800 transition-all font-black uppercase tracking-widest text-xs lg:text-sm shadow-lg active:scale-95 whitespace-nowrap"
                 >
-                    <Plus size={20} />
-                    Add Product
+                    <Plus size={18} />
+                    <span className="hidden sm:inline">Add Product</span>
+                    <span className="sm:hidden">Add</span>
                 </button>
             </div>
 

@@ -77,8 +77,8 @@ export default function DashboardHome() {
                         <h3 className="font-bold text-gray-700">Recent Orders List</h3>
                         <button className="text-sm text-blue-600 font-bold hover:underline">View All</button>
                     </div>
-                    <div className="p-0">
-                        <table className="w-full text-left">
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left min-w-[500px] lg:min-w-full">
                             <thead className="bg-gray-50 text-xs text-gray-500 uppercase">
                                 <tr>
                                     <th className="px-6 py-3">Customer</th>
@@ -92,7 +92,7 @@ export default function DashboardHome() {
                                         <td className="px-6 py-4 font-medium text-gray-800">{order.name}</td>
                                         <td className="px-6 py-4 text-gray-600">{order.product_name}</td>
                                         <td className="px-6 py-4">
-                                            <span className="px-2 py-1 bg-green-50 text-green-700 text-xs rounded-full font-bold">
+                                            <span className="px-2 py-1 bg-green-50 text-green-700 text-xs rounded-full font-bold whitespace-nowrap">
                                                 {order.payment}
                                             </span>
                                         </td>
