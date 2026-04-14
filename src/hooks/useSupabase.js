@@ -128,5 +128,15 @@ export default function useSupabase() {
         return { data, error, loading };
     };
 
-    return { useCollection, getDocument };
+    let upsertItem = async (table, data) => {
+        const { data: result, error } = await supabase
+            .from(table)
+            .upsert(data)
+            .select();
+
+        if (error) throw error;
+        return result;
+    };
+
+    return { useCollection, getDocument, upsertItem };
 }

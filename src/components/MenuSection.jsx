@@ -51,7 +51,7 @@ export default function MenuSection({ setSortBy, sortBy }) {
                         <a
                             href={item.href}
                             key={key}
-                            className="text-white hover:text-blue-400 font-bold transition-colors"
+                            className="text-blue-600 hover:text-blue-400 font-bold transition-colors"
                         >
                             {item.name}
                         </a>

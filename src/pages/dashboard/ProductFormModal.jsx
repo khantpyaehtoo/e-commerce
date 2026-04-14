@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { supabase } from "../../../supabaseClient";
 import { X, Loader2, Save } from "lucide-react";
+import useSupabase from "../../hooks/useSupabase";
 
 export default function ProductFormModal({ isOpen, onClose, product = null }) {
     const [formData, setFormData] = useState({
@@ -10,6 +10,7 @@ export default function ProductFormModal({ isOpen, onClose, product = null }) {
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const { upsertItem } = useSupabase();
 
     useEffect(() => {
         if (product) {
@@ -36,21 +37,11 @@ export default function ProductFormModal({ isOpen, onClose, product = null }) {
             image: formData.image,
         };
 
+        if (product?.id) productData.id = product.id;
+
         try {
-            if (product?.id) {
-                // Update existing product
-                const { error: updateError } = await supabase
-                    .from("Market_Items")
-                    .update(productData)
-                    .eq("id", product.id);
-                if (updateError) throw updateError;
-            } else {
-                // Insert new product
-                const { error: insertError } = await supabase
-                    .from("Market_Items")
-                    .insert([productData]);
-                if (insertError) throw insertError;
-            }
+            await upsertItem("Market_Items", productData);
+
             onClose();
         } catch (err) {
             setError(err.message);
