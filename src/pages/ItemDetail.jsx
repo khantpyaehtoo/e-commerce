@@ -7,10 +7,14 @@ import useSupabase from "../hooks/useSupabase";
 import DetailNavSection from "../components/DetailNavSection";
 import { cn } from "../lib/utils";
 import SkeletonDetail from "../components/skeletons/SkeletonDetail";
+import { useContext } from "react";
+import { CartContext } from "../contexts/CartContext";
+import { BookmarkPlus } from "lucide-react";
 
 export default function ItemDetail() {
     let { id } = useParams();
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const { addToCart } = useContext(CartContext);
 
     let { getDocument } = useSupabase();
 
@@ -101,7 +105,7 @@ export default function ItemDetail() {
                                 initial={{ y: 20, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ delay: 0.8 }}
-                                className="pt-4"
+                                className="pt-4 flex flex-wrap gap-4"
                             >
                                 <button
                                     onClick={() => setIsFormOpen(true)}
@@ -121,6 +125,13 @@ export default function ItemDetail() {
                                             d="M13 7l5 5m0 0l-5 5m5-5H6"
                                         />
                                     </svg>
+                                </button>
+                                <button
+                                    onClick={() => addToCart(item)}
+                                    className="inline-flex items-center justify-center gap-2 px-8 py-4 font-bold text-purple-600 transition-all duration-200 bg-white border-2 border-purple-600 rounded-xl hover:bg-purple-50 active:scale-95"
+                                >
+                                    <BookmarkPlus size={20} />
+                                    Add to Cart
                                 </button>
                             </motion.div>
                         </motion.div>

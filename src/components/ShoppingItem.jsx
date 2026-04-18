@@ -7,7 +7,6 @@ import Footer from "./Footer";
 import SkeletonCard from "./skeletons/SkeletonCard";
 import { BookmarkPlus, Info, ShoppingCart } from "lucide-react";
 import { CartContext } from "../contexts/CartContext";
-import CartModal from "./CartModal";
 
 export default function ShoppingItems() {
     const [sortBy, setSortBy] = useState("low-to-high");
@@ -136,7 +135,6 @@ export default function ShoppingItems() {
                     No items found.
                 </p>
             )}
-            <CartModal />
             <Footer />
         </div>
     );
