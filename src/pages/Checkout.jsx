@@ -50,7 +50,10 @@ export default function Checkout() {
         <div className="min-h-screen bg-gray-50 pb-20">
             <DetailNavSection />
             
-            <div className="max-w-4xl mx-auto px-4 py-8">
+            <div className={cn(
+                "max-w-4xl mx-auto px-4 py-8",
+                isOrderFormOpen ? "hidden md:block" : "block"
+            )}>
                 <button 
                     onClick={() => navigate(-1)}
                     className="flex items-center gap-2 text-gray-600 hover:text-purple-600 transition-colors mb-6 group"
@@ -139,7 +142,7 @@ export default function Checkout() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-white/90 backdrop-blur-md z-50 flex items-center justify-center overflow-y-auto"
+                        className="fixed inset-0 bg-white md:bg-white/90 backdrop-blur-md z-[100] flex items-center justify-center overflow-y-auto"
                     >
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0, y: 20 }}
