@@ -10,6 +10,7 @@ import DashboardHome from "./pages/dashboard/DashboardHome";
 import OrdersPage from "./pages/dashboard/OrdersPage";
 import ProductsPage from "./pages/dashboard/ProductsPage";
 import NotFound from "./pages/NotFound";
+import CartModal from "./components/CartModal";
 
 function App() {
     const { user, authReady } = useContext(AuthContext);
@@ -45,6 +46,7 @@ function App() {
                 </Route>
                 <Route path="*" element={<NotFound />} />
             </Routes>
+            <CartModal />
         </BrowserRouter>
     );
 }
