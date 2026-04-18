@@ -10,7 +10,7 @@ export default function MenuSection({ setSortBy, sortBy }) {
             <div className="md:hidden flex flex-wrap items-center justify-between gap-2 px-4 py-3">
                 <div className="relative flex-1 min-w-[120px]">
                     <select
-                        className="w-full appearance-none bg-[#2d3748] border border-white/20 text-white py-2 px-3 pr-8 rounded-md text-sm leading-tight focus:outline-none focus:border-blue-500"
+                        className="w-full appearance-none bg-[#2d3748] border border-white/20 text-white py-2 px-3 pr-8 rounded-md text-sm leading-tight focus:outline-none"
                         id="grid-payment"
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
