@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from "react";
 
 export const CartContext = createContext();
 
@@ -7,7 +7,7 @@ export const CartProvider = ({ children }) => {
 
     // Load cart from localStorage on mount
     useEffect(() => {
-        const savedCart = localStorage.getItem('cart');
+        const savedCart = localStorage.getItem("cart");
         if (savedCart) {
             try {
                 setCartItems(JSON.parse(savedCart));
@@ -19,7 +19,7 @@ export const CartProvider = ({ children }) => {
 
     // Save cart to localStorage whenever it changes
     useEffect(() => {
-        localStorage.setItem('cart', JSON.stringify(cartItems));
+        localStorage.setItem("cart", JSON.stringify(cartItems));
     }, [cartItems]);
 
     const addToCart = (item) => {
@@ -27,7 +27,7 @@ export const CartProvider = ({ children }) => {
             const existingItem = prevItems.find((i) => i.id === item.id);
             if (existingItem) {
                 return prevItems.map((i) =>
-                    i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+                    i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i,
                 );
             }
             return [...prevItems, { ...item, quantity: 1 }];
@@ -44,9 +44,7 @@ export const CartProvider = ({ children }) => {
             return;
         }
         setCartItems((prevItems) =>
-            prevItems.map((i) =>
-                i.id === itemId ? { ...i, quantity } : i
-            )
+            prevItems.map((i) => (i.id === itemId ? { ...i, quantity } : i)),
         );
     };
 
@@ -55,7 +53,10 @@ export const CartProvider = ({ children }) => {
     };
 
     const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-    const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const totalPrice = cartItems.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0,
+    );
 
     return (
         <CartContext.Provider
