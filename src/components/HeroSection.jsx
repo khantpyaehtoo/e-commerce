@@ -6,7 +6,7 @@ export default function HeroSection() {
     const y1 = useTransform(scrollY, [0, 500], [0, 150]);
     return (
         <section
-            className="sticky top-0 min-h-[60vh] md:min-h-[80vh] flex flex-col items-center justify-center px-4 bg-cover bg-center bg-no-repeat transition-all duration-300"
+            className="sticky top-0 min-h-[50vh] md:min-h-[60vh] flex flex-col items-center justify-center px-4 bg-cover bg-center bg-no-repeat transition-all duration-300"
             style={{
                 backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${backgroundImageURL})`,
             }}

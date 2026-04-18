@@ -5,6 +5,7 @@ import useSupabase from "../hooks/useSupabase";
 import MenuSection from "./MenuSection";
 import Footer from "./Footer";
 import SkeletonCard from "./skeletons/SkeletonCard";
+import { BookmarkPlus, Info, ShoppingCart } from "lucide-react";
 
 export default function ShoppingItems() {
     const [sortBy, setSortBy] = useState("low-to-high");
@@ -63,12 +64,18 @@ export default function ShoppingItems() {
                                                 {item.name}
                                             </h2>
                                             <p className="py-2 text-purple-600 font-semibold">
-                                                {item.price.toLocaleString()} <small>mmk</small>
+                                                {item.price.toLocaleString()}{" "}
+                                                <small>mmk</small>
                                             </p>
                                         </div>
                                         <div className="flex flex-row-reverse gap-2 justify-end items-center mb-2">
                                             <div className="bg-purple-600 text-white px-6 py-2 w-full text-center rounded-lg hover:bg-purple-700 transition-colors">
                                                 Info
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-row-reverse gap-2 justify-end items-center mb-2">
+                                            <div className="bg-purple-600 text-white px-6 py-2 w-full text-center rounded-lg hover:bg-purple-700 transition-colors">
+                                                Add Cart
                                             </div>
                                         </div>
                                     </div>
@@ -88,11 +95,18 @@ export default function ShoppingItems() {
                                                 {item.name}
                                             </h2>
                                             <p className="text-purple-600 font-semibold mt-1">
-                                                {item.price.toLocaleString()} <small>mmk</small>
+                                                {item.price.toLocaleString()}{" "}
+                                                <small>mmk</small>
                                             </p>
                                         </div>
-                                        <div className="bg-purple-600 text-white px-4 py-2 w-full text-center rounded-lg mt-3 hover:bg-purple-700 transition-colors">
-                                            View Details
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <div className="flex justify-center items-center gap-3 bg-purple-600 text-white px-4 py-2 w-full text-center rounded-lg mt-3 hover:bg-purple-700 transition-colors">
+                                                <Info size={20} /> View Details
+                                            </div>
+                                            <div className="flex justify-center items-center gap-3 border-1 border-purple-700 bg-white text-black px-4 py-2 w-full text-center rounded-lg mt-3 hover:bg-black hover:text-white transition-colors ">
+                                                <BookmarkPlus size={20} /> Add
+                                                Cart
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -102,7 +116,9 @@ export default function ShoppingItems() {
                 </div>
             )}
             {!loading && items.length === 0 && !error && (
-                <p className="text-center mt-10 text-gray-600">No items found.</p>
+                <p className="text-center mt-10 text-gray-600">
+                    No items found.
+                </p>
             )}
             <Footer />
         </div>
