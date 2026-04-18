@@ -1,7 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Faculty+Glyphic&family=Sora:wght@100..800&display=swap');
 @import "tailwindcss";
+
+@font-face {
+  font-family: "Faculty Glyphic, sans-serif";
+  src: url("/font/FacultyGlyphic-Regular.ttf");
+}
 
 @utility no-scrollbar {
   @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+}
+
+html,body {
+  font-family: "Antonio", sans-serif;
+  font-weight: 600;
 }
 
 .dots-container {
