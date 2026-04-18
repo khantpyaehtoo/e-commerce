@@ -1,14 +1,17 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { CartContext } from '../contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus, ArrowLeft, ShoppingBag } from 'lucide-react';
 import DetailNavSection from '../components/DetailNavSection';
+import OrderFormModal from './OrderFormModal';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Checkout() {
     const { cartItems, removeFromCart, updateQuantity, totalPrice, clearCart } = useContext(CartContext);
+    const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
     const navigate = useNavigate();
 
-    if (cartItems.length === 0) {
+    if (cartItems.length === 0 && !isOrderFormOpen) {
         return (
             <div className="min-h-screen bg-gray-50">
                 <DetailNavSection />
@@ -30,6 +33,18 @@ export default function Checkout() {
             </div>
         );
     }
+
+    const productNamesString = cartItems.map(item => `${item.name} (x${item.quantity})`).join(', ');
+
+    const handleOrderSuccess = () => {
+        clearCart();
+        setIsOrderFormOpen(false);
+        navigate('/');
+    };
+
+    const handleCloseModal = () => {
+        setIsOrderFormOpen(false);
+    };
 
     return (
         <div className="min-h-screen bg-gray-50 pb-20">
@@ -108,11 +123,7 @@ export default function Checkout() {
                             </div>
 
                             <button 
-                                onClick={() => {
-                                    alert('Order placed successfully!');
-                                    clearCart();
-                                    navigate('/');
-                                }}
+                                onClick={() => setIsOrderFormOpen(true)}
                                 className="w-full bg-purple-600 text-white font-bold py-4 rounded-xl hover:bg-purple-700 transition-all shadow-lg shadow-purple-200 active:scale-[0.98]"
                             >
                                 Confirm Order
@@ -121,6 +132,30 @@ export default function Checkout() {
                     </div>
                 </div>
             </div>
+
+            <AnimatePresence>
+                {isOrderFormOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-white/90 backdrop-blur-md z-50 flex items-center justify-center overflow-y-auto"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                            className="relative w-full max-w-lg mx-auto p-4"
+                        >
+                            <OrderFormModal
+                                productName={productNamesString}
+                                onClose={handleCloseModal}
+                                onSuccess={handleOrderSuccess}
+                            />
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

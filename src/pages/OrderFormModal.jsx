@@ -2,7 +2,7 @@ import { useState } from "react";
 import { supabase } from "../../supabaseClient";
 import { cn } from "../lib/utils";
 
-export default function OrderFormModal({ productName, onClose }) {
+export default function OrderFormModal({ productName, onClose, onSuccess }) {
     const [formData, setFormData] = useState({
         name: "",
         phone: "",
@@ -52,7 +52,11 @@ export default function OrderFormModal({ productName, onClose }) {
         if (!error) {
             await sendOrderNotification(formData);
             alert("အော်ဒါတင်ခြင်း အောင်မြင်ပါတယ်!");
-            onClose();
+            if (onSuccess) {
+                onSuccess();
+            } else {
+                onClose();
+            }
         } else {
             alert("Database သိမ်းရာမှာ အမှားအယွင်းရှိပါတယ်");
         }
