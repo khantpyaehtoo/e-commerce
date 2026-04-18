@@ -10,6 +10,7 @@ import DashboardHome from "./pages/dashboard/DashboardHome";
 import OrdersPage from "./pages/dashboard/OrdersPage";
 import ProductsPage from "./pages/dashboard/ProductsPage";
 import NotFound from "./pages/NotFound";
+import Checkout from "./pages/Checkout";
 import CartModal from "./components/CartModal";
 
 function App() {
@@ -34,6 +35,8 @@ function App() {
                 <Route path="/" element={<Home />} />
 
                 <Route path="marketItems/:id" element={<ItemDetail />} />
+
+                <Route path="checkout" element={<Checkout />} />
 
                 <Route
                     path={`/${adminPath}`}
