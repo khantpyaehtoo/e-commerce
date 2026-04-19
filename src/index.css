@@ -6,6 +6,15 @@
   src: url("/font/FacultyGlyphic-Regular.ttf");
 }
 
+@theme {
+  --color-deep-plum: #391E29;
+  --color-coffee-bean: #231219;
+  --color-midnight-violet: #210124;
+  --color-white-smoke: #fff8f0;
+  --color-charocal-blue: #2d3748;
+  --color-dusk-blue: ##42516A;
+}
+
 @utility no-scrollbar {
   @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
 }

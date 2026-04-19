@@ -59,7 +59,7 @@ export default function ShoppingItems() {
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                         {filterAndSort().map((item) => (
                             <Link to={`/marketItems/${item.id}`} key={item.id}>
-                                <div className="grid grid-cols-2 gap-2 bg-white border border-gray-100 rounded-lg overflow-hidden h-[220px] md:hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div className="grid grid-cols-2 gap-2 bg-white-smoke border border-gray-100 rounded-lg overflow-hidden h-[220px] md:hidden shadow-sm hover:shadow-md transition-shadow">
                                     <div className="w-full h-full">
                                         <img
                                             src={item.image}
@@ -69,23 +69,25 @@ export default function ShoppingItems() {
                                     </div>
                                     <div className="px-6 py-4 flex flex-col h-full">
                                         <div className="flex-grow">
-                                            <h2 className="py-1 font-bold text-xl text-gray-800">
+                                            <h2 className="py-1 font-bold text-xl text-deep-plum">
                                                 {item.name}
                                             </h2>
-                                            <p className="py-2 text-purple-600 font-semibold">
+                                            <p className="py-2 text-deep-plum font-semibold">
                                                 {item.price.toLocaleString()}{" "}
                                                 <small>mmk</small>
                                             </p>
                                         </div>
                                         <div className="flex flex-row-reverse gap-2 justify-end items-center mb-2">
-                                            <div className="bg-purple-600 text-white px-6 py-2 w-full text-center rounded-lg hover:bg-purple-700 transition-colors">
+                                            <div className="bg-deep-plum text-white px-6 py-2 w-full text-center rounded-lg hover:bg-coffee-bean transition-colors">
                                                 Info
                                             </div>
                                         </div>
                                         <div className="flex flex-row-reverse gap-2 justify-end items-center mb-2">
-                                            <button 
-                                                onClick={(e) => handleAddToCart(e, item)}
-                                                className="bg-purple-600 text-white px-6 py-2 w-full text-center rounded-lg hover:bg-purple-700 transition-colors"
+                                            <button
+                                                onClick={(e) =>
+                                                    handleAddToCart(e, item)
+                                                }
+                                                className="bg-deep-plum text-white px-6 py-2 w-full text-center rounded-lg hover:bg-coffee-bean transition-colors"
                                             >
                                                 Add Cart
                                             </button>
@@ -93,7 +95,7 @@ export default function ShoppingItems() {
                                     </div>
                                 </div>
 
-                                <div className="hidden md:flex flex-col bg-white border border-gray-100 rounded-lg overflow-hidden h-[380px] hover:scale-105 transition-all duration-300 shadow-sm hover:shadow-xl">
+                                <div className="hidden md:flex flex-col bg-white-smoke border border-gray-100 rounded-lg overflow-hidden h-[380px] hover:scale-105 transition-all duration-300 shadow-sm hover:shadow-xl">
                                     <div className="w-full h-[220px] overflow-hidden">
                                         <img
                                             src={item.image}
@@ -103,21 +105,23 @@ export default function ShoppingItems() {
                                     </div>
                                     <div className="p-5 flex flex-col justify-between flex-grow">
                                         <div>
-                                            <h2 className="font-bold text-xl text-gray-800 truncate">
+                                            <h2 className="font-bold text-xl text-deep-plum truncate">
                                                 {item.name}
                                             </h2>
-                                            <p className="text-purple-600 font-semibold mt-1">
+                                            <p className="text-deep-plum font-semibold mt-1">
                                                 {item.price.toLocaleString()}{" "}
                                                 <small>mmk</small>
                                             </p>
                                         </div>
                                         <div className="grid grid-cols-2 gap-2">
-                                            <div className="flex justify-center items-center gap-3 bg-purple-600 text-white px-4 py-2 w-full text-center rounded-lg mt-3 hover:bg-purple-700 transition-colors">
+                                            <div className="flex justify-center items-center gap-3 bg-deep-plum text-white px-4 py-2 w-full text-center rounded-lg mt-3 hover:bg-coffee-bean transition-colors">
                                                 <Info size={20} /> View Details
                                             </div>
-                                            <button 
-                                                onClick={(e) => handleAddToCart(e, item)}
-                                                className="flex justify-center items-center gap-3 border-1 border-purple-700 bg-white text-black px-4 py-2 w-full text-center rounded-lg mt-3 hover:bg-black hover:text-white transition-colors "
+                                            <button
+                                                onClick={(e) =>
+                                                    handleAddToCart(e, item)
+                                                }
+                                                className="flex justify-center items-center gap-3 border-1 border-deep-plum bg-white text-black px-4 py-2 w-full text-center rounded-lg mt-3 hover:bg-coffee-bean hover:text-white transition-colors "
                                             >
                                                 <BookmarkPlus size={20} /> Add
                                                 Cart

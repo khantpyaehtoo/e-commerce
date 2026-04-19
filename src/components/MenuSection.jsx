@@ -36,7 +36,7 @@ export default function MenuSection({ setSortBy, sortBy }) {
                         <a
                             href={item.href}
                             key={key}
-                            className="py-2 px-4 bg-blue-500 text-white hover:bg-amber-300 focus:bg-white focus:text-gray-800 rounded-md text-sm text-center font-medium transition-colors"
+                            className="py-2 px-4 bg-charocal-blue text-white hover:bg-dusk-blue focus:bg-white focus:text-gray-800 rounded-md text-sm text-center font-medium transition-colors"
                         >
                             {item.name}
                         </a>
@@ -51,7 +51,7 @@ export default function MenuSection({ setSortBy, sortBy }) {
                         <a
                             href={item.href}
                             key={key}
-                            className="text-blue-600 hover:text-blue-400 font-bold transition-colors"
+                            className="text-charocal-blue hover:text-dusk-blue font-bold transition-colors"
                         >
                             {item.name}
                         </a>
@@ -60,7 +60,7 @@ export default function MenuSection({ setSortBy, sortBy }) {
 
                 <div className="relative">
                     <select
-                        className="appearance-none bg-[#2d3748] border border-white/20 text-white py-2 px-4 pr-10 rounded-lg focus:outline-none focus:border-blue-500"
+                        className="appearance-none bg-charocal-blue border border-white/20 text-white py-2 px-4 pr-10 rounded-lg focus:outline-none focus:border-dusk-blue"
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
                     >
