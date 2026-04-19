@@ -12,6 +12,7 @@ import ProductsPage from "./pages/dashboard/ProductsPage";
 import NotFound from "./pages/NotFound";
 import Checkout from "./pages/Checkout";
 import CartModal from "./components/CartModal";
+import SkeletonCard from "./components/skeletons/SkeletonCard";
 
 function App() {
     const { user, authReady } = useContext(AuthContext);
@@ -19,14 +20,7 @@ function App() {
     const adminPath = import.meta.env.VITE_ADMIN_PATH;
 
     if (!authReady) {
-        return (
-            <div className="dots-container">
-                <p className="text-center mt-10 dot"></p>
-                <p className="text-center mt-10 dot"></p>
-                <p className="text-center mt-10 dot"></p>
-                <p className="text-center mt-10 dot"></p>
-            </div>
-        );
+        return <SkeletonCard />;
     }
 
     return (

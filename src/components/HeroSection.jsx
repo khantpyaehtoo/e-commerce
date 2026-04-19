@@ -1,9 +1,36 @@
+import { useGSAP } from "@gsap/react";
 import backgroundImageURL from "../assets/backgroundPNG.jpg";
 import { motion, useScroll, useTransform } from "framer-motion";
+import gsap from "gsap";
+import { SplitText } from "gsap/all";
 
 export default function HeroSection() {
     const { scrollY } = useScroll();
     const y1 = useTransform(scrollY, [0, 500], [0, 150]);
+
+    useGSAP(() => {
+        const titleSplit = SplitText.create(".hero-title", {
+            type: "words",
+        });
+        const tl = gsap.timeline({
+            delay: 1,
+        });
+
+        tl.to(".hero-content", {
+            opacity: 1,
+            y: 0,
+            ease: "power1.inOut",
+        }).from(
+            titleSplit.words,
+            {
+                yPercent: 200,
+                stagger: 0.06,
+                ease: "power2.out",
+            },
+            "-=0.2",
+        );
+    });
+
     return (
         <section
             className="sticky top-0 min-h-[50vh] md:min-h-[60vh] flex flex-col items-center justify-center px-4 bg-cover bg-center bg-no-repeat transition-all duration-300"
@@ -15,14 +42,18 @@ export default function HeroSection() {
                 className="container max-w-4xl mx-auto text-center py-8 px-6 rounded-2xl backdrop-blur-[2px]"
                 style={{ y: y1 }}
             >
-                <div className="space-y-6">
-                    <h1 className="text-4xl md:text-7xl font-extrabold text-white leading-tight tracking-tight">
-                        Don't{" "}
-                        <span className="text-blue-400 drop-shadow-sm">
-                            OVERWATER
-                        </span>{" "}
-                        your Plants!
-                    </h1>
+                <div className="space-y-6 ">
+                    <div className="hero-content opacity-0">
+                        <div className="overflow-hidden">
+                            <h1 className="text-4xl md:text-7xl font-extrabold text-white leading-tight tracking-tight hero-title">
+                                Don't{" "}
+                                <span className="text-blue-400 drop-shadow-sm">
+                                    OVERWATER
+                                </span>{" "}
+                                your Plants!
+                            </h1>
+                        </div>
+                    </div>
 
                     <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto font-medium">
                         Keep your green friends healthy with our expert care
