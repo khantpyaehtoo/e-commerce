@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import OrderFormModal from "./OrderFormModal";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -14,11 +14,24 @@ import { BookmarkPlus } from "lucide-react";
 export default function ItemDetail() {
     let { id } = useParams();
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
     const { addToCart } = useContext(CartContext);
 
     let { getDocument } = useSupabase();
 
     let { data: item, loading, error } = getDocument("Market_Items", id);
+
+    useEffect(() => {
+        if (item && !selectedImage) {
+            setSelectedImage(item.image);
+        }
+    }, [item, selectedImage]);
+
+    // Check for images array from Supabase and combine with main image
+    const images = Array.from(new Set([
+        item?.image,
+        ...(Array.isArray(item?.images) ? item.images : [])
+    ])).filter(Boolean);
 
     return (
         <div className="min-h-screen bg-white text-gray-900 relative overflow-x-hidden">
@@ -42,34 +55,110 @@ export default function ItemDetail() {
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}
                         className={cn(
-                            "grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-6xl mx-auto",
+                            "grid grid-cols-1 md:grid-cols-2 gap-8 items-start max-w-6xl mx-auto",
                             isFormOpen ? "hidden md:grid" : "grid",
                         )}
                     >
                         {/* Image Section */}
-                        <motion.div
-                            initial={{ x: -50, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
-                            className="relative group"
-                        >
-                            <div className="absolute -inset-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-                            <div className="relative bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-xl aspect-square md:aspect-auto md:h-[500px]">
-                                <img
-                                    src={item.image}
-                                    alt={item.name}
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-gray-100/20 via-transparent to-transparent"></div>
-                            </div>
-                        </motion.div>
+                        <div className="space-y-6">
+                            <motion.div
+                                initial={{ x: -50, opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                transition={{
+                                    delay: 0.2,
+                                    type: "spring",
+                                    stiffness: 100,
+                                }}
+                                className="relative group"
+                            >
+                                <div className="absolute -inset-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-3xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
+                                <div className="relative bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-2xl aspect-[4/5] md:aspect-square">
+                                    <AnimatePresence mode="wait">
+                                        <motion.img
+                                            key={selectedImage}
+                                            initial={{ opacity: 0, scale: 1.1 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.9 }}
+                                            transition={{ duration: 0.4 }}
+                                            src={selectedImage}
+                                            alt={item.name}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </AnimatePresence>
+                                    
+                                    {/* Navigation Arrows (Only if multiple images) */}
+                                    {images.length > 1 && (
+                                        <div className="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button 
+                                                onClick={() => {
+                                                    const idx = images.indexOf(selectedImage);
+                                                    setSelectedImage(images[(idx - 1 + images.length) % images.length]);
+                                                }}
+                                                className="p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-colors"
+                                            >
+                                                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                                </svg>
+                                            </button>
+                                            <button 
+                                                onClick={() => {
+                                                    const idx = images.indexOf(selectedImage);
+                                                    setSelectedImage(images[(idx + 1) % images.length]);
+                                                }}
+                                                className="p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-colors"
+                                            >
+                                                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            </motion.div>
+
+                            {/* Thumbnails Grid */}
+                            {images.length > 1 && (
+                                <div className="flex flex-wrap gap-4">
+                                    {images.map((img, index) => (
+                                        <motion.button
+                                            key={index}
+                                            whileHover={{ y: -4 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            onClick={() => setSelectedImage(img)}
+                                            className={cn(
+                                                "relative w-20 h-20 rounded-2xl overflow-hidden border-4 transition-all duration-300",
+                                                selectedImage === img
+                                                    ? "border-purple-600 shadow-lg"
+                                                    : "border-gray-100 hover:border-purple-200"
+                                            )}
+                                        >
+                                            <img
+                                                src={img}
+                                                alt={`${item.name} thumb ${index + 1}`}
+                                                className={cn(
+                                                    "w-full h-full object-cover",
+                                                    selectedImage !== img && "opacity-60 hover:opacity-100"
+                                                )}
+                                            />
+                                            {selectedImage === img && (
+                                                <div className="absolute inset-0 bg-purple-600/10" />
+                                            )}
+                                        </motion.button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
 
                         {/* Content Section */}
                         <motion.div
                             initial={{ x: 50, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
-                            transition={{ delay: 0.4, type: "spring", stiffness: 100 }}
-                            className="space-y-6"
+                            transition={{
+                                delay: 0.4,
+                                type: "spring",
+                                stiffness: 100,
+                            }}
+                            className="space-y-6 md:sticky md:top-8"
                         >
                             <div className="space-y-2">
                                 <motion.span
@@ -93,12 +182,15 @@ export default function ItemDetail() {
                                     </span>
                                 </span>
                                 <div className="h-6 w-px bg-gray-200"></div>
-                                <span className="text-green-600 text-sm font-medium">In Stock</span>
+                                <span className="text-green-600 text-sm font-medium">
+                                    In Stock
+                                </span>
                             </div>
 
                             <p className="text-gray-600 text-lg leading-relaxed">
-                                Experience quality and style with {item.name}. Perfect for your
-                                daily needs and designed to provide the best value for your money.
+                                Experience quality and style with {item.name}.
+                                Perfect for your daily needs and designed to
+                                provide the best value for your money.
                             </p>
 
                             <motion.div

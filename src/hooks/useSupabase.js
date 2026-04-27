@@ -70,7 +70,6 @@ export default function useSupabase() {
         const [loading, setLoading] = useState(false);
 
         useEffect(() => {
-            // id မပါလာရင် ဘာမှလုပ်စရာမလိုလို့ ခဏရပ်မယ်
             if (!id) return;
 
             setLoading(true);

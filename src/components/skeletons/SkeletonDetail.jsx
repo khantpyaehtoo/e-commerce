@@ -1,8 +1,15 @@
 export default function SkeletonDetail() {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto my-10 animate-pulse">
-            <div className="border-gray-100 border-2 rounded-2xl bg-gray-50 flex items-center justify-center aspect-square md:aspect-auto md:h-[500px] shadow-sm">
-                <div className="w-[90%] h-[80%] bg-gray-200 rounded-xl"></div>
+            <div className="space-y-4">
+                <div className="border-gray-100 border-2 rounded-2xl bg-gray-50 flex items-center justify-center aspect-square shadow-sm">
+                    <div className="w-[90%] h-[80%] bg-gray-200 rounded-xl"></div>
+                </div>
+                <div className="flex gap-3">
+                    <div className="w-20 h-20 bg-gray-200 rounded-lg"></div>
+                    <div className="w-20 h-20 bg-gray-200 rounded-lg"></div>
+                    <div className="w-20 h-20 bg-gray-200 rounded-lg"></div>
+                </div>
             </div>
 
             <div className="space-y-6 py-4">

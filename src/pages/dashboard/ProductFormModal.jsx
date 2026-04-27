@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
-import { X, Loader2, Save } from "lucide-react";
+import { X, Loader2, Save, Trash2 } from "lucide-react";
 import useSupabase from "../../hooks/useSupabase";
+import { cn } from "../../lib/utils";
 
 export default function ProductFormModal({ isOpen, onClose, product = null }) {
     const [formData, setFormData] = useState({
         name: "",
         price: "",
         image: "",
+        images: [],
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [imageFile, setImageFile] = useState(null);
+    const [imageUrlInput, setImageUrlInput] = useState("");
 
     const { upsertItem, uploadImage } = useSupabase();
 
@@ -20,20 +22,68 @@ export default function ProductFormModal({ isOpen, onClose, product = null }) {
                 name: product.name || "",
                 price: product.price || "",
                 image: product.image || "",
+                images: product.images || [],
             });
         } else {
-            setFormData({ name: "", price: "", image: "" });
+            setFormData({ name: "", price: "", image: "", images: [] });
         }
+        setImageUrlInput("");
     }, [product, isOpen]);
 
     if (!isOpen) return null;
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setImageFile(file);
-            setFormData({ ...formData, image: URL.createObjectURL(file) });
+    const handleFileChange = async (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length > 0) {
+            setIsLoading(true);
+            try {
+                const uploadPromises = files.map(file => uploadImage(file));
+                const uploadedUrls = await uploadPromises;
+                
+                setFormData(prev => {
+                    const newImages = [...prev.images, ...uploadedUrls];
+                    return {
+                        ...prev,
+                        image: prev.image || uploadedUrls[0], // Set first one as main if none exists
+                        images: newImages
+                    };
+                });
+            } catch (err) {
+                setError("Failed to upload one or more images");
+            } finally {
+                setIsLoading(false);
+            }
         }
+    };
+
+    const addImageUrl = () => {
+        if (imageUrlInput) {
+            setFormData(prev => ({
+                ...prev,
+                image: prev.image || imageUrlInput,
+                images: [...prev.images, imageUrlInput]
+            }));
+            setImageUrlInput("");
+        }
+    };
+
+    const removeImage = (indexToRemove) => {
+        setFormData(prev => {
+            const newImages = prev.images.filter((_, index) => index !== indexToRemove);
+            let newMainImage = prev.image;
+            if (prev.image === prev.images[indexToRemove]) {
+                newMainImage = newImages[0] || "";
+            }
+            return {
+                ...prev,
+                image: newMainImage,
+                images: newImages
+            };
+        });
+    };
+
+    const setAsMain = (img) => {
+        setFormData(prev => ({ ...prev, image: img }));
     };
 
     const handleSubmit = async (e) => {
@@ -42,19 +92,11 @@ export default function ProductFormModal({ isOpen, onClose, product = null }) {
         setError(null);
 
         try {
-            let finalImageUrl = formData.image;
-
-            if (imageFile) {
-                finalImageUrl = await uploadImage(imageFile);
-            } else if (!finalImageUrl) {
-                finalImageUrl =
-                    "https://zklirmjrbqmgrixzmviv.supabase.co/storage/v1/object/public/Products/photo_2026-03-26_21-56-19.jpg";
-            }
-
             const productData = {
                 name: formData.name,
                 price: Number(formData.price),
-                image: finalImageUrl,
+                image: formData.image || (formData.images.length > 0 ? formData.images[0] : ""),
+                images: formData.images,
             };
 
             if (product?.id) {
@@ -73,8 +115,8 @@ export default function ProductFormModal({ isOpen, onClose, product = null }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
-                <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200 flex flex-col max-h-[90vh]">
+                <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50 flex-shrink-0">
                     <h3 className="text-xl font-black text-gray-800 uppercase tracking-tight">
                         {product ? "Edit Product" : "Add New Product"}
                     </h3>
@@ -86,7 +128,7 @@ export default function ProductFormModal({ isOpen, onClose, product = null }) {
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-6 space-y-5">
+                <form onSubmit={handleSubmit} className="p-6 space-y-5 overflow-y-auto">
                     {error && (
                         <div className="p-3 bg-red-50 border border-red-100 text-red-600 text-sm rounded-lg font-bold">
                             {error}
@@ -133,47 +175,78 @@ export default function ProductFormModal({ isOpen, onClose, product = null }) {
 
                     <div className="space-y-2">
                         <label className="text-xs font-black text-gray-400 uppercase tracking-widest">
-                            Image URL
+                            Images
                         </label>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleFileChange}
-                            className="w-full px-4 py-3 bg-gray-100 border-transparent focus:bg-white focus:border-black border-2 rounded-xl transition-all outline-none font-bold text-gray-700"
-                        />
-                        <p className="text-[10px] text-gray-400">
-                            Or Paste an Image URL below
-                        </p>
-                        <input
-                            required
-                            type="url"
-                            value={formData.image}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    image: e.target.value,
-                                })
-                            }
-                            placeholder="https://..."
-                            className="w-full px-4 py-3 bg-gray-100 border-transparent focus:bg-white focus:border-black border-2 rounded-xl transition-all outline-none font-bold text-gray-700"
-                        />
+                        <div className="space-y-3">
+                            <input
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                onChange={handleFileChange}
+                                className="w-full px-4 py-3 bg-gray-100 border-transparent focus:bg-white focus:border-black border-2 rounded-xl transition-all outline-none font-bold text-gray-700 text-sm"
+                            />
+                            
+                            <div className="flex gap-2">
+                                <input
+                                    type="url"
+                                    value={imageUrlInput}
+                                    onChange={(e) => setImageUrlInput(e.target.value)}
+                                    placeholder="Paste Image URL..."
+                                    className="flex-1 px-4 py-3 bg-gray-100 border-transparent focus:bg-white focus:border-black border-2 rounded-xl transition-all outline-none font-bold text-gray-700 text-sm"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={addImageUrl}
+                                    className="px-4 bg-black text-white rounded-xl font-bold hover:bg-gray-800 transition-colors"
+                                >
+                                    Add
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
-                    {formData.image && (
-                        <div className="mt-2 rounded-xl overflow-hidden border-2 border-gray-100 aspect-video bg-gray-50">
-                            <img
-                                src={formData.image}
-                                alt="Preview"
-                                className="w-full h-full object-cover"
-                                onError={(e) =>
-                                    (e.target.src =
-                                        "https://placehold.co/600x400?text=Invalid+Image+URL")
-                                }
-                            />
+                    {/* Image Previews */}
+                    {formData.images.length > 0 && (
+                        <div className="grid grid-cols-3 gap-2 mt-2">
+                            {formData.images.map((img, index) => (
+                                <div key={index} className="relative group aspect-square rounded-lg overflow-hidden border-2 border-gray-100">
+                                    <img
+                                        src={img}
+                                        alt={`Preview ${index}`}
+                                        className={cn(
+                                            "w-full h-full object-cover transition-opacity",
+                                            formData.image === img ? "opacity-100" : "opacity-60"
+                                        )}
+                                    />
+                                    {formData.image === img && (
+                                        <div className="absolute top-1 left-1 bg-purple-600 text-[8px] text-white px-1.5 py-0.5 rounded-full font-bold uppercase">
+                                            Main
+                                        </div>
+                                    )}
+                                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity gap-1">
+                                        <button
+                                            type="button"
+                                            onClick={() => setAsMain(img)}
+                                            className="p-1 bg-white rounded-full text-gray-800 hover:text-purple-600"
+                                            title="Set as main"
+                                        >
+                                            <Save size={14} />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => removeImage(index)}
+                                            className="p-1 bg-white rounded-full text-red-600 hover:text-red-700"
+                                            title="Remove"
+                                        >
+                                            <Trash2 size={14} />
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     )}
 
-                    <div className="pt-4">
+                    <div className="pt-4 sticky bottom-0 bg-white">
                         <button
                             disabled={isLoading}
                             type="submit"
