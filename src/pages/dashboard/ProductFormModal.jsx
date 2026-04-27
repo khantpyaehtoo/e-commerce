@@ -38,7 +38,7 @@ export default function ProductFormModal({ isOpen, onClose, product = null }) {
             setIsLoading(true);
             try {
                 const uploadPromises = files.map(file => uploadImage(file));
-                const uploadedUrls = await uploadPromises;
+                const uploadedUrls = await Promise.all(uploadPromises);
                 
                 setFormData(prev => {
                     const newImages = [...prev.images, ...uploadedUrls];
@@ -174,8 +174,9 @@ export default function ProductFormModal({ isOpen, onClose, product = null }) {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest">
+                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest flex justify-between">
                             Images
+                            {isLoading && <Loader2 size={12} className="animate-spin text-black" />}
                         </label>
                         <div className="space-y-3">
                             <input

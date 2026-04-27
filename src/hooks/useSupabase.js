@@ -139,12 +139,16 @@ export default function useSupabase() {
 
     let uploadImage = async (file) => {
         const fileExt = file.name.split(".").pop();
-        const fileName = `${Math.random()}.${fileExt}`;
+        const fileName = `${Date.now()}-${Math.floor(Math.random() * 1000000)}.${fileExt}`;
         const filePath = `${fileName}`;
 
         const { error: uploadError, data } = await supabase.storage
             .from("Products")
-            .upload(filePath, file);
+            .upload(filePath, file, {
+                cacheControl: "3600",
+                upsert: false,
+                contentType: file.type
+            });
 
         if (uploadError) throw uploadError;
 
